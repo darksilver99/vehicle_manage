@@ -73,6 +73,18 @@ class FFAppState extends ChangeNotifier {
     updateFn(_customerData);
     prefs.setString('ff_customerData', _customerData.serialize());
   }
+
+  String _appVersion = '';
+  String get appVersion => _appVersion;
+  set appVersion(String value) {
+    _appVersion = value;
+  }
+
+  int _appBuildVersion = 0;
+  int get appBuildVersion => _appBuildVersion;
+  set appBuildVersion(int value) {
+    _appBuildVersion = value;
+  }
 }
 
 void _safeInit(Function() initializeField) {
