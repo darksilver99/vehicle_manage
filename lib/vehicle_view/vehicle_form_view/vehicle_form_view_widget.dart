@@ -731,10 +731,7 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                     return;
                                   }
                                   if (widget!.vehicleReference != null) {
-                                    if (_model.uploadedLocalFile != null &&
-                                        (_model.uploadedLocalFile.bytes
-                                                ?.isNotEmpty ??
-                                            false)) {
+                                    if (_model.tmpImageList.isNotEmpty) {
                                       _model.urlList2 =
                                           await actions.uploadImageToFirebase(
                                         '${currentUserUid}/vehicle',
