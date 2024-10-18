@@ -127,9 +127,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             () async {
                               if (_model.textController.text != null &&
                                   _model.textController.text != '') {
-                                _model.tmpVehicleList = functions
+                                _model.vehicleList = functions
                                     .filterVehicleList(
-                                        'aaa', _model.tmpVehicleList.toList())
+                                        _model.textController.text,
+                                        _model.tmpVehicleList.toList())
                                     .toList()
                                     .cast<VehicleDataStruct>();
                                 safeSetState(() {});
