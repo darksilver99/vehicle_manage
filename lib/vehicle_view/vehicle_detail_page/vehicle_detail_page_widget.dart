@@ -414,9 +414,17 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                   weekFormat: false,
                                   weekStartsMonday: false,
                                   rowHeight: 48.0,
-                                  onChange: (DateTimeRange? newSelectedDate) {
-                                    safeSetState(() => _model
-                                        .calendarSelectedDay = newSelectedDate);
+                                  onChange:
+                                      (DateTimeRange? newSelectedDate) async {
+                                    if (_model.calendarSelectedDay ==
+                                        newSelectedDate) {
+                                      return;
+                                    }
+                                    _model.calendarSelectedDay =
+                                        newSelectedDate;
+
+                                    safeSetState(() {});
+                                    safeSetState(() {});
                                   },
                                   titleStyle: FlutterFlowTheme.of(context)
                                       .titleLarge
