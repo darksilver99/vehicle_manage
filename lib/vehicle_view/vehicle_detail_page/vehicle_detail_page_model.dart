@@ -18,10 +18,10 @@ class VehicleDetailPageModel extends FlutterFlowModel<VehicleDetailPageWidget> {
 
   bool isLoading = true;
 
+  VehicleListRecord? vehicleDocument;
+
   ///  State fields for stateful widgets in this page.
 
-  // Stores action output result for [Backend Call - Read Document] action in VehicleDetailPage widget.
-  VehicleListRecord? vehicleDocumentResult;
   // State field(s) for Calendar widget.
   DateTimeRange? calendarSelectedDay;
 
@@ -35,4 +35,13 @@ class VehicleDetailPageModel extends FlutterFlowModel<VehicleDetailPageWidget> {
 
   @override
   void dispose() {}
+
+  /// Action blocks.
+  Future initVehicle(BuildContext context) async {
+    VehicleListRecord? vehicleDocumentResult;
+
+    vehicleDocumentResult =
+        await VehicleListRecord.getDocumentOnce(widget!.vehicleReference!);
+    vehicleDocument = vehicleDocumentResult;
+  }
 }
