@@ -922,7 +922,7 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                     ),
                   ),
                 ]
-                    .addToStart(SizedBox(height: 16.0))
+                    .addToStart(SizedBox(height: 8.0))
                     .addToEnd(SizedBox(height: 180.0)),
               ),
             ),

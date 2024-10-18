@@ -240,35 +240,15 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               hoverColor: Colors.transparent,
                               highlightColor: Colors.transparent,
                               onTap: () async {
-                                await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  enableDrag: false,
-                                  useSafeArea: true,
-                                  context: context,
-                                  builder: (context) {
-                                    return WebViewAware(
-                                      child: GestureDetector(
-                                        onTap: () =>
-                                            FocusScope.of(context).unfocus(),
-                                        child: Padding(
-                                          padding:
-                                              MediaQuery.viewInsetsOf(context),
-                                          child: VehicleFormViewWidget(
-                                            vehicleReference:
-                                                vehicleViewListItem.docRef,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ).then((value) => safeSetState(() {}));
-
-                                _model.isLoading = true;
-                                safeSetState(() {});
-                                await _model.initVehicle(context);
-                                _model.isLoading = false;
-                                safeSetState(() {});
+                                context.pushNamed(
+                                  'VehicleDetailPage',
+                                  queryParameters: {
+                                    'vehicleReference': serializeParam(
+                                      vehicleViewListItem.docRef,
+                                      ParamType.DocumentReference,
+                                    ),
+                                  }.withoutNulls,
+                                );
                               },
                               child: Container(
                                 width: double.infinity,
