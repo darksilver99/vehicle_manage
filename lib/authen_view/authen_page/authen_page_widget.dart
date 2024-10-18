@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/authen_view/authen_background_view/authen_background_view_widget.dart';
+import '/authen_view/register_view/register_view_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -389,6 +390,27 @@ class _AuthenPageWidgetState extends State<AuthenPageWidget> {
                                                 decoration:
                                                     TextDecoration.underline,
                                               ),
+                                          mouseCursor: SystemMouseCursors.click,
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () async {
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                enableDrag: false,
+                                                useSafeArea: true,
+                                                context: context,
+                                                builder: (context) {
+                                                  return Padding(
+                                                    padding:
+                                                        MediaQuery.viewInsetsOf(
+                                                            context),
+                                                    child: RegisterViewWidget(),
+                                                  );
+                                                },
+                                              ).then((value) =>
+                                                  safeSetState(() {}));
+                                            },
                                         )
                                       ],
                                       style: FlutterFlowTheme.of(context)
