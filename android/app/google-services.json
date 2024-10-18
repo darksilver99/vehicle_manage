@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1016114810673",
+    "project_id": "vehicle-manage-pbquak",
+    "storage_bucket": "vehicle-manage-pbquak.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016114810673:android:bc66e8906d2d03170a6a10",
+        "android_client_info": {
+          "package_name": "com.silver.vehiclemanage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyavnmGp5Jyzlk6tTeuuCh37EL2mpUEGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
