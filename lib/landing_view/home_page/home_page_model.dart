@@ -87,7 +87,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
         vehicleNumber: vehicleResult?[vehicleIndex]?.vehicleNumber,
         image: vehicleResult?[vehicleIndex]?.image,
         status: vehicleResult?[vehicleIndex]?.status,
-        statusText: 'aaa',
+        statusText:
+            vehicleResult?[vehicleIndex]?.status == 3 ? 'ปรับปรุง' : 'ว่าง',
       ));
       vehicleIndex = vehicleIndex + 1;
     }

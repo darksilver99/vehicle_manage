@@ -379,19 +379,59 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                       MainAxisSize.max,
                                                   children: [
                                                     Expanded(
-                                                      child: Text(
-                                                        'สถานะ : ${vehicleViewListItem.statusText}',
-                                                        maxLines: 1,
-                                                        style: FlutterFlowTheme
-                                                                .of(context)
-                                                            .bodyMedium
-                                                            .override(
-                                                              fontFamily:
-                                                                  'Kanit',
-                                                              fontSize: 14.0,
-                                                              letterSpacing:
-                                                                  0.0,
+                                                      child: RichText(
+                                                        textScaler:
+                                                            MediaQuery.of(
+                                                                    context)
+                                                                .textScaler,
+                                                        text: TextSpan(
+                                                          children: [
+                                                            TextSpan(
+                                                              text: 'สถานะ : ',
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Kanit',
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                  ),
                                                             ),
+                                                            TextSpan(
+                                                              text: vehicleViewListItem
+                                                                  .statusText,
+                                                              style: FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .bodyMedium
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'Kanit',
+                                                                    color: vehicleViewListItem.status ==
+                                                                            3
+                                                                        ? FlutterFlowTheme.of(context)
+                                                                            .warning
+                                                                        : FlutterFlowTheme.of(context)
+                                                                            .success,
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                            )
+                                                          ],
+                                                          style: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .bodyMedium
+                                                              .override(
+                                                                fontFamily:
+                                                                    'Kanit',
+                                                                letterSpacing:
+                                                                    0.0,
+                                                              ),
+                                                        ),
+                                                        maxLines: 1,
                                                       ),
                                                     ),
                                                   ],

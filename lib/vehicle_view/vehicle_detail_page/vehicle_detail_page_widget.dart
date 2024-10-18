@@ -1,9 +1,12 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/other_view/info_custom_view/info_custom_view_widget.dart';
 import '/vehicle_view/vehicle_form_view/vehicle_form_view_widget.dart';
+import '/actions/actions.dart' as action_blocks;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -137,57 +140,126 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 16.0, 0.0),
-                                        child: InkWell(
-                                          splashColor: Colors.transparent,
-                                          focusColor: Colors.transparent,
-                                          hoverColor: Colors.transparent,
-                                          highlightColor: Colors.transparent,
-                                          onTap: () async {
-                                            await showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              enableDrag: false,
-                                              useSafeArea: true,
-                                              context: context,
-                                              builder: (context) {
-                                                return WebViewAware(
-                                                  child: Padding(
-                                                    padding:
-                                                        MediaQuery.viewInsetsOf(
-                                                            context),
-                                                    child:
-                                                        VehicleFormViewWidget(
-                                                      vehicleReference: widget!
-                                                          .vehicleReference,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ).then(
-                                                (value) => safeSetState(() {}));
+                                      InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          _model.isConfirm =
+                                              await action_blocks.confirmBlock(
+                                            context,
+                                            title:
+                                                'ต้องการเปลี่ยนสถานะเป็น \"ปรับปรุง\" ?',
+                                            detail:
+                                                'รถรายการนี้จะไม่สามารถเช่าได้ เนื่องจากอยู่ในระหว่างปรับปรุง',
+                                          );
+                                          if (_model.isConfirm!) {
+                                            await widget!.vehicleReference!
+                                                .update(
+                                                    createVehicleListRecordData(
+                                              updateDate: getCurrentTimestamp,
+                                              status: 3,
+                                            ));
+                                            context.safePop();
+                                          }
 
-                                            _model.isLoading = true;
-                                            safeSetState(() {});
-                                            await _model.initVehicle(context);
-                                            _model.isLoading = false;
-                                            safeSetState(() {});
-                                          },
+                                          safeSetState(() {});
+                                        },
+                                        child: Container(
+                                          width: 54.0,
+                                          height: 54.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.plumbing_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                                size: 22.0,
+                                              ),
+                                              Text(
+                                                'ปรังปรุง',
+                                                maxLines: 2,
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily: 'Kanit',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .info,
+                                                          fontSize: 12.0,
+                                                          letterSpacing: 0.0,
+                                                        ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          await showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            enableDrag: false,
+                                            useSafeArea: true,
+                                            context: context,
+                                            builder: (context) {
+                                              return WebViewAware(
+                                                child: Padding(
+                                                  padding:
+                                                      MediaQuery.viewInsetsOf(
+                                                          context),
+                                                  child: VehicleFormViewWidget(
+                                                    vehicleReference: widget!
+                                                        .vehicleReference,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ).then(
+                                              (value) => safeSetState(() {}));
+
+                                          _model.isLoading = true;
+                                          safeSetState(() {});
+                                          await _model.initVehicle(context);
+                                          _model.isLoading = false;
+                                          safeSetState(() {});
+                                        },
+                                        child: Container(
+                                          width: 54.0,
+                                          height: 54.0,
+                                          decoration: BoxDecoration(
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryBackground,
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
                                             children: [
                                               Icon(
                                                 Icons.mode_edit,
                                                 color:
                                                     FlutterFlowTheme.of(context)
                                                         .warning,
-                                                size: 18.0,
+                                                size: 22.0,
                                               ),
                                               Text(
                                                 'แก้ไข',
+                                                maxLines: 2,
                                                 style:
                                                     FlutterFlowTheme.of(context)
                                                         .bodyMedium
@@ -196,6 +268,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                           color: FlutterFlowTheme
                                                                   .of(context)
                                                               .warning,
+                                                          fontSize: 12.0,
                                                           letterSpacing: 0.0,
                                                         ),
                                               ),
@@ -203,28 +276,94 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                           ),
                                         ),
                                       ),
-                                      Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Icon(
-                                            Icons.delete_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .error,
-                                            size: 18.0,
-                                          ),
-                                          Text(
-                                            'ลบ',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'Kanit',
+                                      Builder(
+                                        builder: (context) => InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            _model.isConfirm2 =
+                                                await action_blocks
+                                                    .confirmBlock(
+                                              context,
+                                              title: 'ต้องการลบรายการนี้?',
+                                              detail:
+                                                  'หากลบแล้วจะไม่สามารถเรียกคืนข้อมูลได้ รวมถึงรายการเช่าของรถคันนี้',
+                                            );
+                                            if (_model.isConfirm2!) {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (dialogContext) {
+                                                  return Dialog(
+                                                    elevation: 0,
+                                                    insetPadding:
+                                                        EdgeInsets.zero,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    alignment:
+                                                        AlignmentDirectional(
+                                                                0.0, 0.0)
+                                                            .resolve(
+                                                                Directionality.of(
+                                                                    context)),
+                                                    child: WebViewAware(
+                                                      child:
+                                                          InfoCustomViewWidget(
+                                                        title:
+                                                            'ลบข้อมูลเรียบร้อยแล้ว',
+                                                        status: 'success',
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+
+                                              context.safePop();
+                                            }
+
+                                            safeSetState(() {});
+                                          },
+                                          child: Container(
+                                            width: 54.0,
+                                            height: 54.0,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryBackground,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.delete_rounded,
                                                   color: FlutterFlowTheme.of(
                                                           context)
                                                       .error,
-                                                  letterSpacing: 0.0,
+                                                  size: 22.0,
                                                 ),
+                                                Text(
+                                                  'ลบ',
+                                                  maxLines: 2,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily: 'Kanit',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .error,
+                                                        fontSize: 12.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ],
                                   ),
