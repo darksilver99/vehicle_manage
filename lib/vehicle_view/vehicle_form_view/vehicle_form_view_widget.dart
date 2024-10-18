@@ -373,7 +373,7 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                                           await action_blocks
                                                               .confirmBlock(
                                                         context,
-                                                        title: 'ต้',
+                                                        title: 'ต้องการลบรูป?',
                                                       );
                                                       if (_model.isConfirm!) {
                                                         _model.tmpImageList =
