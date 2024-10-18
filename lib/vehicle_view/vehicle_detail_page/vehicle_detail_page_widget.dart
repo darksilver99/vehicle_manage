@@ -242,18 +242,21 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                       .titleLarge
                                       .override(
                                         fontFamily: 'Kanit',
+                                        fontSize: 22.0,
                                         letterSpacing: 0.0,
                                       ),
                                   dayOfWeekStyle: FlutterFlowTheme.of(context)
                                       .bodyLarge
                                       .override(
                                         fontFamily: 'Kanit',
+                                        fontSize: 12.0,
                                         letterSpacing: 0.0,
                                       ),
                                   dateStyle: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
                                         fontFamily: 'Kanit',
+                                        fontSize: 14.0,
                                         letterSpacing: 0.0,
                                       ),
                                   selectedDateStyle:
@@ -261,6 +264,8 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                           .titleSmall
                                           .override(
                                             fontFamily: 'Kanit',
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
                                             letterSpacing: 0.0,
                                           ),
                                   inactiveDateStyle:
