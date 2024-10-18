@@ -8,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:webviewx_plus/webviewx_plus.dart';
 import 'authen_page_model.dart';
 export 'authen_page_model.dart';
 
@@ -401,11 +402,14 @@ class _AuthenPageWidgetState extends State<AuthenPageWidget> {
                                                 useSafeArea: true,
                                                 context: context,
                                                 builder: (context) {
-                                                  return Padding(
-                                                    padding:
-                                                        MediaQuery.viewInsetsOf(
-                                                            context),
-                                                    child: RegisterViewWidget(),
+                                                  return WebViewAware(
+                                                    child: Padding(
+                                                      padding: MediaQuery
+                                                          .viewInsetsOf(
+                                                              context),
+                                                      child:
+                                                          RegisterViewWidget(),
+                                                    ),
                                                   );
                                                 },
                                               ).then((value) =>

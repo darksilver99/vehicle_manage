@@ -4,24 +4,24 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/other_view/info_custom_view/info_custom_view_widget.dart';
-import '/other_view/web_view/web_view_widget.dart';
-import '/actions/actions.dart' as action_blocks;
+import '/custom_code/actions/index.dart' as actions;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
-import 'register_view_model.dart';
-export 'register_view_model.dart';
+import 'vehicle_form_view_model.dart';
+export 'vehicle_form_view_model.dart';
 
-class RegisterViewWidget extends StatefulWidget {
-  const RegisterViewWidget({super.key});
+class VehicleFormViewWidget extends StatefulWidget {
+  const VehicleFormViewWidget({super.key});
 
   @override
-  State<RegisterViewWidget> createState() => _RegisterViewWidgetState();
+  State<VehicleFormViewWidget> createState() => _VehicleFormViewWidgetState();
 }
 
-class _RegisterViewWidgetState extends State<RegisterViewWidget> {
-  late RegisterViewModel _model;
+class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
+  late VehicleFormViewModel _model;
 
   @override
   void setState(VoidCallback callback) {
@@ -32,22 +32,16 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => RegisterViewModel());
+    _model = createModel(context, () => VehicleFormViewModel());
 
-    _model.emailTextController ??= TextEditingController();
+    _model.textController1 ??= TextEditingController();
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.passwordTextController ??= TextEditingController();
+    _model.textController2 ??= TextEditingController();
     _model.textFieldFocusNode2 ??= FocusNode();
 
-    _model.confirmPasswordTextController ??= TextEditingController();
-    _model.textFieldFocusNode3 ??= FocusNode();
-
-    _model.textController2 ??= TextEditingController();
-    _model.textFieldFocusNode4 ??= FocusNode();
-
     _model.textController3 ??= TextEditingController();
-    _model.textFieldFocusNode5 ??= FocusNode();
+    _model.textFieldFocusNode3 ??= FocusNode();
   }
 
   @override
@@ -112,7 +106,7 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                       children: [
                         Expanded(
                           child: Text(
-                            'ลงทะเบียน',
+                            'เพิ่มรถ',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -141,13 +135,13 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                             child: Container(
                               width: double.infinity,
                               child: TextFormField(
-                                controller: _model.emailTextController,
+                                controller: _model.textController1,
                                 focusNode: _model.textFieldFocusNode1,
                                 autofocus: false,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   isDense: false,
-                                  labelText: 'อีเมล',
+                                  labelText: 'ชื่อรถ Honda, Mazda',
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
@@ -205,186 +199,7 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                                     ),
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primaryText,
-                                validator: _model.emailTextControllerValidator
-                                    .asValidator(context),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 16.0),
-                            child: Container(
-                              width: double.infinity,
-                              child: TextFormField(
-                                controller: _model.passwordTextController,
-                                focusNode: _model.textFieldFocusNode2,
-                                autofocus: false,
-                                obscureText: !_model.passwordVisibility1,
-                                decoration: InputDecoration(
-                                  isDense: false,
-                                  labelText: 'รหัสผ่าน',
-                                  labelStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .override(
-                                        fontFamily: 'Kanit',
-                                        fontSize: 22.0,
-                                        letterSpacing: 0.0,
-                                      ),
-                                  hintStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .override(
-                                        fontFamily: 'Kanit',
-                                        fontSize: 22.0,
-                                        letterSpacing: 0.0,
-                                      ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context).error,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context).error,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  suffixIcon: InkWell(
-                                    onTap: () => safeSetState(
-                                      () => _model.passwordVisibility1 =
-                                          !_model.passwordVisibility1,
-                                    ),
-                                    focusNode: FocusNode(skipTraversal: true),
-                                    child: Icon(
-                                      _model.passwordVisibility1
-                                          ? Icons.visibility_outlined
-                                          : Icons.visibility_off_outlined,
-                                      size: 28.0,
-                                    ),
-                                  ),
-                                ),
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Kanit',
-                                      fontSize: 22.0,
-                                      letterSpacing: 0.0,
-                                    ),
-                                cursorColor:
-                                    FlutterFlowTheme.of(context).primaryText,
-                                validator: _model
-                                    .passwordTextControllerValidator
-                                    .asValidator(context),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 16.0),
-                            child: Container(
-                              width: double.infinity,
-                              child: TextFormField(
-                                controller:
-                                    _model.confirmPasswordTextController,
-                                focusNode: _model.textFieldFocusNode3,
-                                autofocus: false,
-                                obscureText: !_model.passwordVisibility2,
-                                decoration: InputDecoration(
-                                  isDense: false,
-                                  labelText: 'ยืนยันรหัสผ่าน',
-                                  labelStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .override(
-                                        fontFamily: 'Kanit',
-                                        fontSize: 22.0,
-                                        letterSpacing: 0.0,
-                                      ),
-                                  hintStyle: FlutterFlowTheme.of(context)
-                                      .labelMedium
-                                      .override(
-                                        fontFamily: 'Kanit',
-                                        fontSize: 22.0,
-                                        letterSpacing: 0.0,
-                                      ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .alternate,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context).error,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context).error,
-                                      width: 1.0,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                  suffixIcon: InkWell(
-                                    onTap: () => safeSetState(
-                                      () => _model.passwordVisibility2 =
-                                          !_model.passwordVisibility2,
-                                    ),
-                                    focusNode: FocusNode(skipTraversal: true),
-                                    child: Icon(
-                                      _model.passwordVisibility2
-                                          ? Icons.visibility_outlined
-                                          : Icons.visibility_off_outlined,
-                                      size: 28.0,
-                                    ),
-                                  ),
-                                ),
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'Kanit',
-                                      fontSize: 22.0,
-                                      letterSpacing: 0.0,
-                                    ),
-                                cursorColor:
-                                    FlutterFlowTheme.of(context).primaryText,
-                                validator: _model
-                                    .confirmPasswordTextControllerValidator
+                                validator: _model.textController1Validator
                                     .asValidator(context),
                               ),
                             ),
@@ -396,12 +211,12 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                               width: double.infinity,
                               child: TextFormField(
                                 controller: _model.textController2,
-                                focusNode: _model.textFieldFocusNode4,
+                                focusNode: _model.textFieldFocusNode2,
                                 autofocus: false,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   isDense: false,
-                                  labelText: 'ชื่อ - นามสกุล',
+                                  labelText: 'ทะเบียนรถ',
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
@@ -467,16 +282,72 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 16.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 8.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Image.network(
+                                          'https://picsum.photos/seed/56/600',
+                                          width: 80.0,
+                                          height: 80.0,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                FFButtonWidget(
+                                  onPressed: () {
+                                    print('Button pressed ...');
+                                  },
+                                  text: 'แนบรูป',
+                                  icon: Icon(
+                                    Icons.image_rounded,
+                                    size: 15.0,
+                                  ),
+                                  options: FFButtonOptions(
+                                    height: 40.0,
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 0.0, 16.0, 0.0),
+                                    iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily: 'Kanit',
+                                          color: Colors.white,
+                                          letterSpacing: 0.0,
+                                        ),
+                                    elevation: 0.0,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 16.0),
                             child: Container(
                               width: double.infinity,
                               child: TextFormField(
                                 controller: _model.textController3,
-                                focusNode: _model.textFieldFocusNode5,
+                                focusNode: _model.textFieldFocusNode3,
                                 autofocus: false,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   isDense: false,
-                                  labelText: 'เบอร์โทรศัพท์',
+                                  labelText: 'รายละเอียดเพิ่มเติม',
                                   labelStyle: FlutterFlowTheme.of(context)
                                       .labelMedium
                                       .override(
@@ -532,99 +403,12 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                                       fontSize: 22.0,
                                       letterSpacing: 0.0,
                                     ),
-                                keyboardType: TextInputType.phone,
+                                maxLines: 3,
                                 cursorColor:
                                     FlutterFlowTheme.of(context).primaryText,
                                 validator: _model.textController3Validator
                                     .asValidator(context),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(
-                                0.0, 0.0, 0.0, 16.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Theme(
-                                  data: ThemeData(
-                                    checkboxTheme: CheckboxThemeData(
-                                      visualDensity: VisualDensity.compact,
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(4.0),
-                                      ),
-                                    ),
-                                    unselectedWidgetColor:
-                                        FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                  ),
-                                  child: Checkbox(
-                                    value: _model.checkboxValue ??= true,
-                                    onChanged: (newValue) async {
-                                      safeSetState(() =>
-                                          _model.checkboxValue = newValue!);
-                                    },
-                                    side: BorderSide(
-                                      width: 2,
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryText,
-                                    ),
-                                    activeColor:
-                                        FlutterFlowTheme.of(context).primary,
-                                    checkColor: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: InkWell(
-                                    splashColor: Colors.transparent,
-                                    focusColor: Colors.transparent,
-                                    hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    onTap: () async {
-                                      await action_blocks.initConfig(context);
-                                      await showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        enableDrag: false,
-                                        useSafeArea: true,
-                                        context: context,
-                                        builder: (context) {
-                                          return WebViewAware(
-                                            child: Padding(
-                                              padding: MediaQuery.viewInsetsOf(
-                                                  context),
-                                              child: WebViewWidget(
-                                                title: 'นโยบายความเป็นส่วนตัว',
-                                                url: FFAppState()
-                                                    .configData
-                                                    .policyUrl,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ).then((value) => safeSetState(() {}));
-                                    },
-                                    child: Text(
-                                      'ยอมรับนโยบายความเป็นส่วนตัว',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Kanit',
-                                            color: FlutterFlowTheme.of(context)
-                                                .link,
-                                            fontSize: 18.0,
-                                            letterSpacing: 0.0,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                           Builder(
@@ -633,49 +417,54 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                                   0.0, 0.0, 0.0, 16.0),
                               child: FFButtonWidget(
                                 onPressed: () async {
-                                  Function() _navigate = () {};
                                   if (_model.formKey.currentState == null ||
                                       !_model.formKey.currentState!
                                           .validate()) {
                                     return;
                                   }
-                                  if (_model.checkboxValue!) {
-                                    GoRouter.of(context).prepareAuthEvent();
-                                    if (_model.passwordTextController.text !=
-                                        _model.confirmPasswordTextController
-                                            .text) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            'Passwords don\'t match!',
-                                          ),
-                                        ),
-                                      );
-                                      return;
-                                    }
-
-                                    final user = await authManager
-                                        .createAccountWithEmail(
-                                      context,
-                                      _model.emailTextController.text,
-                                      _model.passwordTextController.text,
+                                  if (_model.tmpImageList.isNotEmpty) {
+                                    _model.urlList =
+                                        await actions.uploadImageToFirebase(
+                                      '${currentUserUid}/vehicle',
+                                      _model.tmpImageList.toList(),
+                                      false,
                                     );
-                                    if (user == null) {
-                                      return;
-                                    }
 
-                                    await UsersRecord.collection
-                                        .doc(user.uid)
-                                        .update(createUsersRecordData(
-                                          displayName:
-                                              _model.textController2.text,
-                                          phoneNumber:
-                                              _model.textController3.text,
-                                        ));
+                                    await VehicleListRecord.createDoc(
+                                            FFAppState()
+                                                .customerData
+                                                .customerRef!)
+                                        .set(createVehicleListRecordData(
+                                      createDate: getCurrentTimestamp,
+                                      status: 1,
+                                      subject: _model.textController1.text,
+                                      detail: _model.textController3.text,
+                                      vehicleNumber:
+                                          _model.textController2.text,
+                                      image: _model.urlList?.first,
+                                    ));
+                                    await showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return Dialog(
+                                          elevation: 0,
+                                          insetPadding: EdgeInsets.zero,
+                                          backgroundColor: Colors.transparent,
+                                          alignment: AlignmentDirectional(
+                                                  0.0, 0.0)
+                                              .resolve(
+                                                  Directionality.of(context)),
+                                          child: WebViewAware(
+                                            child: InfoCustomViewWidget(
+                                              title: 'เพิ่มข้อมูลเรียบร้อยแล้ว',
+                                              status: 'success',
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
 
-                                    _navigate = () => context.goNamedAuth(
-                                        'HomePage', context.mounted);
+                                    Navigator.pop(context, 'update');
                                   } else {
                                     await showDialog(
                                       context: context,
@@ -690,8 +479,7 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                                                   Directionality.of(context)),
                                           child: WebViewAware(
                                             child: InfoCustomViewWidget(
-                                              title:
-                                                  'กรุณายอมรับนโยบายความเป็นส่วนตัว',
+                                              title: 'กรุณาแนบรูป',
                                               status: 'error',
                                             ),
                                           ),
@@ -700,9 +488,9 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                                     );
                                   }
 
-                                  _navigate();
+                                  safeSetState(() {});
                                 },
-                                text: 'สมัครสมาชิก',
+                                text: 'ยืนยัน',
                                 options: FFButtonOptions(
                                   width: double.infinity,
                                   height: 54.0,

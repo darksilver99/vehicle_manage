@@ -31,6 +31,8 @@ dependencies:
   cloud_firestore_platform_interface: 6.2.3
   cloud_firestore_web: 3.12.3
   collection: 1.18.0
+  easy_debounce: 2.0.1
+  file_picker: 8.0.3
   firebase_auth: 4.19.5
   firebase_auth_platform_interface: 7.2.6
   firebase_auth_web: 5.11.5
@@ -43,6 +45,7 @@ dependencies:
   flutter_animate: 4.5.0
   flutter_cache_manager: 3.3.1
   flutter_native_splash: 2.3.1
+  flutter_plugin_android_lifecycle: 2.0.20
   font_awesome_flutter: 10.7.0
   from_css_color: 2.0.0
   go_router: 12.1.3
@@ -60,6 +63,7 @@ dependencies:
   path_provider_foundation: 2.4.0
   path_provider_platform_interface: 2.1.2
   plugin_platform_interface: 2.1.8
+  pointer_interceptor: 0.10.1
   provider: 6.1.2
   rxdart: 0.27.7
   shared_preferences: 2.2.2
@@ -78,6 +82,12 @@ dependencies:
   url_launcher_android: 6.3.4
   url_launcher_ios: 6.3.1
   url_launcher_platform_interface: 2.3.2
+  uuid: ^4.0.0
+  webview_flutter: 4.7.0
+  webview_flutter_android: 3.15.0
+  webview_flutter_platform_interface: 2.10.0
+  webview_flutter_wkwebview: 3.12.0
+  webviewx_plus: 0.5.0
   xml: 6.5.0
 
   # The following adds the Cupertino Icons font to your application.
@@ -86,7 +96,9 @@ dependencies:
 
 dependency_overrides:
   http: 1.2.1
+  pointer_interceptor: 0.10.1
   uuid: ^4.0.0
+  win32: 5.5.1
 
 dev_dependencies:
   flutter_launcher_icons: 0.13.1
