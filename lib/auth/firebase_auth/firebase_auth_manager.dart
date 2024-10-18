@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vehicle_manage/components/info_custom_view_widget.dart';
 import '../auth_manager.dart';
 import '../base_auth_user_provider.dart';
 import '../../flutter_flow/flutter_flow_util.dart';
@@ -303,6 +304,25 @@ class FirebaseAuthManager extends AuthManager
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(errorMsg)),
+      );
+      await showDialog(
+        context: context,
+        builder: (dialogContext) {
+          return Dialog(
+            elevation: 0,
+            insetPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            alignment: AlignmentDirectional(
+                0.0, 0.0)
+                .resolve(
+                Directionality.of(context)),
+            child: InfoCustomViewWidget(
+              title:
+              errorMsg,
+              status: 'error',
+            ),
+          );
+        },
       );
       return null;
     }
