@@ -1,4 +1,3 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -39,8 +38,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.vehicleDocumentResult =
-          await VehicleListRecord.getDocumentOnce(widget!.vehicleReference!);
+      await _model.initVehicle(context);
       _model.isLoading = false;
       safeSetState(() {});
     });
@@ -125,8 +123,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                   0.0, 0.0, 8.0, 0.0),
                                           child: Text(
                                             valueOrDefault<String>(
-                                              _model.vehicleDocumentResult
-                                                  ?.subject,
+                                              _model.vehicleDocument?.subject,
                                               '-',
                                             ),
                                             maxLines: 2,
@@ -172,6 +169,12 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                               },
                                             ).then(
                                                 (value) => safeSetState(() {}));
+
+                                            _model.isLoading = true;
+                                            safeSetState(() {});
+                                            await _model.initVehicle(context);
+                                            _model.isLoading = false;
+                                            safeSetState(() {});
                                           },
                                           child: Column(
                                             mainAxisSize: MainAxisSize.max,
@@ -264,7 +267,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                           .override(
                                             fontFamily: 'Kanit',
                                             color: FlutterFlowTheme.of(context)
-                                                .primaryText,
+                                                .primaryBackground,
                                             letterSpacing: 0.0,
                                           ),
                                   inactiveDateStyle:
