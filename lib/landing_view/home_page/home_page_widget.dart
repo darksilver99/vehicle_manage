@@ -3,6 +3,7 @@ import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/other_view/no_data_view/no_data_view_widget.dart';
 import '/vehicle_view/vehicle_form_view/vehicle_form_view_widget.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
@@ -211,6 +212,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   child: Builder(
                     builder: (context) {
                       final vehicleViewList = _model.vehicleList.toList();
+                      if (vehicleViewList.isEmpty) {
+                        return NoDataViewWidget();
+                      }
 
                       return ListView.separated(
                         padding: EdgeInsets.fromLTRB(
