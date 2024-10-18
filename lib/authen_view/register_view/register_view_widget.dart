@@ -1,12 +1,15 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
-import '/components/info_custom_view_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/other_view/info_custom_view/info_custom_view_widget.dart';
+import '/other_view/web_view/web_view_widget.dart';
+import '/actions/actions.dart' as action_blocks;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:webviewx_plus/webviewx_plus.dart';
 import 'register_view_model.dart';
 export 'register_view_model.dart';
 
@@ -56,6 +59,8 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -574,18 +579,49 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                                   ),
                                 ),
                                 Expanded(
-                                  child: Text(
-                                    'ยอมรับนโยบายความเป็นส่วนตัว',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Kanit',
-                                          color:
-                                              FlutterFlowTheme.of(context).link,
-                                          fontSize: 18.0,
-                                          letterSpacing: 0.0,
-                                          decoration: TextDecoration.underline,
-                                        ),
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      await action_blocks.initConfig(context);
+                                      await showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        enableDrag: false,
+                                        useSafeArea: true,
+                                        context: context,
+                                        builder: (context) {
+                                          return WebViewAware(
+                                            child: Padding(
+                                              padding: MediaQuery.viewInsetsOf(
+                                                  context),
+                                              child: WebViewWidget(
+                                                title: 'นโยบายความเป็นส่วนตัว',
+                                                url: FFAppState()
+                                                    .configData
+                                                    .policyUrl,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ).then((value) => safeSetState(() {}));
+                                    },
+                                    child: Text(
+                                      'ยอมรับนโยบายความเป็นส่วนตัว',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Kanit',
+                                            color: FlutterFlowTheme.of(context)
+                                                .link,
+                                            fontSize: 18.0,
+                                            letterSpacing: 0.0,
+                                            decoration:
+                                                TextDecoration.underline,
+                                          ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -671,10 +707,12 @@ class _RegisterViewWidgetState extends State<RegisterViewWidget> {
                                                   0.0, 0.0)
                                               .resolve(
                                                   Directionality.of(context)),
-                                          child: InfoCustomViewWidget(
-                                            title:
-                                                'กรุณายอมรับนโยบายความเป็นส่วนตัว',
-                                            status: 'error',
+                                          child: WebViewAware(
+                                            child: InfoCustomViewWidget(
+                                              title:
+                                                  'กรุณายอมรับนโยบายความเป็นส่วนตัว',
+                                              status: 'error',
+                                            ),
                                           ),
                                         );
                                       },
