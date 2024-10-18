@@ -111,6 +111,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'TestPage',
           path: '/testPage',
           builder: (context, params) => TestPageWidget(),
+        ),
+        FFRoute(
+          name: 'VehicleDetailPage',
+          path: '/vehicleDetailPage',
+          builder: (context, params) => VehicleDetailPageWidget(
+            vehicleReference: params.getParam(
+              'vehicleReference',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['customer_list', 'vehicle_list'],
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -349,7 +361,11 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => TransitionInfo(
+        hasTransition: true,
+        transitionType: PageTransitionType.leftToRight,
+        duration: Duration(milliseconds: 300),
+      );
 }
 
 class RootPageContext {
