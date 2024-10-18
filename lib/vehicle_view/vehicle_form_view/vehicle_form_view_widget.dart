@@ -1,13 +1,17 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/upload_data.dart';
 import '/other_view/info_custom_view/info_custom_view_widget.dart';
+import '/actions/actions.dart' as action_blocks;
 import '/custom_code/actions/index.dart' as actions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
 import 'vehicle_form_view_model.dart';
@@ -286,28 +290,175 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                               mainAxisSize: MainAxisSize.max,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 0.0, 8.0),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        child: Image.network(
-                                          'https://picsum.photos/seed/56/600',
+                                if (_model.tmpImageList.isNotEmpty)
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 8.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Container(
                                           width: 80.0,
                                           height: 80.0,
-                                          fit: BoxFit.cover,
+                                          child: Stack(
+                                            children: [
+                                              InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .fade,
+                                                      child:
+                                                          FlutterFlowExpandedImageView(
+                                                        image: Image.memory(
+                                                          _model
+                                                                  .tmpImageList
+                                                                  .first
+                                                                  .bytes ??
+                                                              Uint8List
+                                                                  .fromList([]),
+                                                          fit: BoxFit.contain,
+                                                        ),
+                                                        allowRotation: false,
+                                                        tag: 'imageTag',
+                                                        useHeroAnimation: true,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Hero(
+                                                  tag: 'imageTag',
+                                                  transitionOnUserGestures:
+                                                      true,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    child: Image.memory(
+                                                      _model.tmpImageList.first
+                                                              .bytes ??
+                                                          Uint8List.fromList(
+                                                              []),
+                                                      width: 80.0,
+                                                      height: 80.0,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: AlignmentDirectional(
+                                                    1.0, -1.0),
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 2.0, 2.0, 0.0),
+                                                  child: InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      _model.isConfirm =
+                                                          await action_blocks
+                                                              .confirmBlock(
+                                                        context,
+                                                        title: 'ต้',
+                                                      );
+                                                      if (_model.isConfirm!) {
+                                                        _model.tmpImageList =
+                                                            [];
+                                                        safeSetState(() {});
+                                                      }
+
+                                                      safeSetState(() {});
+                                                    },
+                                                    child: Icon(
+                                                      Icons.cancel_rounded,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .error,
+                                                      size: 24.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
                                 FFButtonWidget(
-                                  onPressed: () {
-                                    print('Button pressed ...');
+                                  onPressed: () async {
+                                    final selectedMedia =
+                                        await selectMediaWithSourceBottomSheet(
+                                      context: context,
+                                      maxWidth: 600.00,
+                                      imageQuality: 80,
+                                      allowPhoto: true,
+                                    );
+                                    if (selectedMedia != null &&
+                                        selectedMedia.every((m) =>
+                                            validateFileFormat(
+                                                m.storagePath, context))) {
+                                      safeSetState(
+                                          () => _model.isDataUploading = true);
+                                      var selectedUploadedFiles =
+                                          <FFUploadedFile>[];
+
+                                      try {
+                                        selectedUploadedFiles = selectedMedia
+                                            .map((m) => FFUploadedFile(
+                                                  name: m.storagePath
+                                                      .split('/')
+                                                      .last,
+                                                  bytes: m.bytes,
+                                                  height: m.dimensions?.height,
+                                                  width: m.dimensions?.width,
+                                                  blurHash: m.blurHash,
+                                                ))
+                                            .toList();
+                                      } finally {
+                                        _model.isDataUploading = false;
+                                      }
+                                      if (selectedUploadedFiles.length ==
+                                          selectedMedia.length) {
+                                        safeSetState(() {
+                                          _model.uploadedLocalFile =
+                                              selectedUploadedFiles.first;
+                                        });
+                                      } else {
+                                        safeSetState(() {});
+                                        return;
+                                      }
+                                    }
+
+                                    if (_model.uploadedLocalFile != null &&
+                                        (_model.uploadedLocalFile.bytes
+                                                ?.isNotEmpty ??
+                                            false)) {
+                                      _model.tmpImageList = [];
+                                      _model.addToTmpImageList(
+                                          _model.uploadedLocalFile);
+                                      safeSetState(() {});
+                                    }
+                                    safeSetState(() {
+                                      _model.isDataUploading = false;
+                                      _model.uploadedLocalFile = FFUploadedFile(
+                                          bytes: Uint8List.fromList([]));
+                                    });
                                   },
                                   text: 'แนบรูป',
                                   icon: Icon(
