@@ -403,15 +403,15 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                                         title: 'ต้องการลบรูป?',
                                                       );
                                                       if (_model.isConfirm2!) {
-                                                        _model.tmpImageList =
-                                                            [];
-                                                        _model.image = null;
-                                                        safeSetState(() {});
                                                         await FirebaseStorage
                                                             .instance
                                                             .refFromURL(
                                                                 _model.image!)
                                                             .delete();
+                                                        _model.tmpImageList =
+                                                            [];
+                                                        _model.image = null;
+                                                        safeSetState(() {});
                                                       }
 
                                                       safeSetState(() {});
