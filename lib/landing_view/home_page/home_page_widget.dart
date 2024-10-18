@@ -410,7 +410,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     color: vehicleViewListItem.status ==
                                                                             3
                                                                         ? FlutterFlowTheme.of(context)
-                                                                            .warning
+                                                                            .info
                                                                         : FlutterFlowTheme.of(context)
                                                                             .success,
                                                                     letterSpacing:

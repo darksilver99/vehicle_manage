@@ -292,6 +292,12 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                   'หากลบแล้วจะไม่สามารถเรียกคืนข้อมูลได้ รวมถึงรายการเช่าของรถคันนี้',
                                             );
                                             if (_model.isConfirm2!) {
+                                              await widget!.vehicleReference!
+                                                  .update(
+                                                      createVehicleListRecordData(
+                                                status: 2,
+                                                updateDate: getCurrentTimestamp,
+                                              ));
                                               await showDialog(
                                                 context: context,
                                                 builder: (dialogContext) {
