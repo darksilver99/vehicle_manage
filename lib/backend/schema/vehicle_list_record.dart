@@ -46,6 +46,11 @@ class VehicleListRecord extends FirestoreRecord {
   String get image => _image ?? '';
   bool hasImage() => _image != null;
 
+  // "update_date" field.
+  DateTime? _updateDate;
+  DateTime? get updateDate => _updateDate;
+  bool hasUpdateDate() => _updateDate != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
@@ -55,6 +60,7 @@ class VehicleListRecord extends FirestoreRecord {
     _detail = snapshotData['detail'] as String?;
     _vehicleNumber = snapshotData['vehicle_number'] as String?;
     _image = snapshotData['image'] as String?;
+    _updateDate = snapshotData['update_date'] as DateTime?;
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -103,6 +109,7 @@ Map<String, dynamic> createVehicleListRecordData({
   String? detail,
   String? vehicleNumber,
   String? image,
+  DateTime? updateDate,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -112,6 +119,7 @@ Map<String, dynamic> createVehicleListRecordData({
       'detail': detail,
       'vehicle_number': vehicleNumber,
       'image': image,
+      'update_date': updateDate,
     }.withoutNulls,
   );
 
@@ -128,7 +136,8 @@ class VehicleListRecordDocumentEquality implements Equality<VehicleListRecord> {
         e1?.subject == e2?.subject &&
         e1?.detail == e2?.detail &&
         e1?.vehicleNumber == e2?.vehicleNumber &&
-        e1?.image == e2?.image;
+        e1?.image == e2?.image &&
+        e1?.updateDate == e2?.updateDate;
   }
 
   @override
@@ -138,7 +147,8 @@ class VehicleListRecordDocumentEquality implements Equality<VehicleListRecord> {
         e?.subject,
         e?.detail,
         e?.vehicleNumber,
-        e?.image
+        e?.image,
+        e?.updateDate
       ]);
 
   @override

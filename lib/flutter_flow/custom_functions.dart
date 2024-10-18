@@ -130,5 +130,10 @@ List<VehicleDataStruct> filterVehicleList(
   String keyword,
   List<VehicleDataStruct> vehicleList,
 ) {
-  return [];
+  String lowerCaseKeyword = keyword.toLowerCase();
+  List<VehicleDataStruct> searchedList = vehicleList.where((doc) {
+    return doc.subject.toLowerCase().contains(lowerCaseKeyword) ||
+        doc.vehicleNumber.toLowerCase().contains(lowerCaseKeyword);
+  }).toList();
+  return searchedList;
 }
