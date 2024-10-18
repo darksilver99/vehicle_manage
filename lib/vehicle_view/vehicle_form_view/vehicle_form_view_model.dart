@@ -10,7 +10,9 @@ import '/actions/actions.dart' as action_blocks;
 import '/custom_code/actions/index.dart' as actions;
 import 'vehicle_form_view_widget.dart' show VehicleFormViewWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -29,9 +31,13 @@ class VehicleFormViewModel extends FlutterFlowModel<VehicleFormViewWidget> {
           int index, Function(FFUploadedFile) updateFn) =>
       tmpImageList[index] = updateFn(tmpImageList[index]);
 
+  String? image;
+
   ///  State fields for stateful widgets in this component.
 
   final formKey = GlobalKey<FormState>();
+  // Stores action output result for [Backend Call - Read Document] action in VehicleFormView widget.
+  VehicleListRecord? vehicleDocumentResult;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode1;
   TextEditingController? textController1;
@@ -57,6 +63,8 @@ class VehicleFormViewModel extends FlutterFlowModel<VehicleFormViewWidget> {
   }
 
   // Stores action output result for [Action Block - confirmBlock] action in Icon widget.
+  bool? isConfirm2;
+  // Stores action output result for [Action Block - confirmBlock] action in Icon widget.
   bool? isConfirm;
   bool isDataUploading = false;
   FFUploadedFile uploadedLocalFile =
@@ -66,6 +74,8 @@ class VehicleFormViewModel extends FlutterFlowModel<VehicleFormViewWidget> {
   FocusNode? textFieldFocusNode3;
   TextEditingController? textController3;
   String? Function(BuildContext, String?)? textController3Validator;
+  // Stores action output result for [Custom Action - uploadImageToFirebase] action in Button widget.
+  List<String>? urlList2;
   // Stores action output result for [Custom Action - uploadImageToFirebase] action in Button widget.
   List<String>? urlList;
 

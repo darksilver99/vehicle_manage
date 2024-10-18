@@ -9,7 +9,9 @@ import '/other_view/info_custom_view/info_custom_view_widget.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/custom_code/actions/index.dart' as actions;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +20,12 @@ import 'vehicle_form_view_model.dart';
 export 'vehicle_form_view_model.dart';
 
 class VehicleFormViewWidget extends StatefulWidget {
-  const VehicleFormViewWidget({super.key});
+  const VehicleFormViewWidget({
+    super.key,
+    this.vehicleReference,
+  });
+
+  final DocumentReference? vehicleReference;
 
   @override
   State<VehicleFormViewWidget> createState() => _VehicleFormViewWidgetState();
@@ -37,6 +44,32 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => VehicleFormViewModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget!.vehicleReference != null) {
+        _model.vehicleDocumentResult =
+            await VehicleListRecord.getDocumentOnce(widget!.vehicleReference!);
+        safeSetState(() {
+          _model.textController1?.text = _model.vehicleDocumentResult!.subject;
+          _model.textController1?.selection = TextSelection.collapsed(
+              offset: _model.textController1!.text.length);
+        });
+        safeSetState(() {
+          _model.textController2?.text =
+              _model.vehicleDocumentResult!.vehicleNumber;
+          _model.textController2?.selection = TextSelection.collapsed(
+              offset: _model.textController2!.text.length);
+        });
+        safeSetState(() {
+          _model.textController3?.text = _model.vehicleDocumentResult!.detail;
+          _model.textController3?.selection = TextSelection.collapsed(
+              offset: _model.textController3!.text.length);
+        });
+        _model.image = _model.vehicleDocumentResult?.image;
+        safeSetState(() {});
+      }
+    });
 
     _model.textController1 ??= TextEditingController();
     _model.textFieldFocusNode1 ??= FocusNode();
@@ -110,7 +143,9 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                       children: [
                         Expanded(
                           child: Text(
-                            'เพิ่มรถ',
+                            widget!.vehicleReference != null
+                                ? 'แก้ไขข้อมูลรถ'
+                                : 'เพิ่มข้อมูลรถ',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -290,6 +325,114 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                               mainAxisSize: MainAxisSize.max,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                if (_model.image != null && _model.image != '')
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 8.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Container(
+                                          width: 80.0,
+                                          height: 80.0,
+                                          child: Stack(
+                                            children: [
+                                              InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .fade,
+                                                      child:
+                                                          FlutterFlowExpandedImageView(
+                                                        image: Image.network(
+                                                          _model.image!,
+                                                          fit: BoxFit.contain,
+                                                        ),
+                                                        allowRotation: false,
+                                                        tag: _model.image!,
+                                                        useHeroAnimation: true,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Hero(
+                                                  tag: _model.image!,
+                                                  transitionOnUserGestures:
+                                                      true,
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                    child: Image.network(
+                                                      _model.image!,
+                                                      width: 80.0,
+                                                      height: 80.0,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Align(
+                                                alignment: AlignmentDirectional(
+                                                    1.0, -1.0),
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          0.0, 2.0, 2.0, 0.0),
+                                                  child: InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      _model.isConfirm2 =
+                                                          await action_blocks
+                                                              .confirmBlock(
+                                                        context,
+                                                        title: 'ต้องการลบรูป?',
+                                                      );
+                                                      if (_model.isConfirm2!) {
+                                                        _model.tmpImageList =
+                                                            [];
+                                                        _model.image = null;
+                                                        safeSetState(() {});
+                                                        await FirebaseStorage
+                                                            .instance
+                                                            .refFromURL(
+                                                                _model.image!)
+                                                            .delete();
+                                                      }
+
+                                                      safeSetState(() {});
+                                                    },
+                                                    child: Icon(
+                                                      Icons.cancel_rounded,
+                                                      color:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .error,
+                                                      size: 24.0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 if (_model.tmpImageList.isNotEmpty)
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
@@ -326,14 +469,14 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                                           fit: BoxFit.contain,
                                                         ),
                                                         allowRotation: false,
-                                                        tag: 'imageTag',
+                                                        tag: 'imageTag2',
                                                         useHeroAnimation: true,
                                                       ),
                                                     ),
                                                   );
                                                 },
                                                 child: Hero(
-                                                  tag: 'imageTag',
+                                                  tag: 'imageTag2',
                                                   transitionOnUserGestures:
                                                       true,
                                                   child: ClipRRect(
@@ -456,6 +599,7 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                                     ?.isNotEmpty ??
                                                 false)) {
                                           _model.tmpImageList = [];
+                                          _model.image = null;
                                           _model.addToTmpImageList(
                                               _model.uploadedLocalFile);
                                           safeSetState(() {});
@@ -586,70 +730,142 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                           .validate()) {
                                     return;
                                   }
-                                  if (_model.tmpImageList.isNotEmpty) {
-                                    _model.urlList =
-                                        await actions.uploadImageToFirebase(
-                                      '${currentUserUid}/vehicle',
-                                      _model.tmpImageList.toList(),
-                                      false,
-                                    );
-
-                                    await VehicleListRecord.createDoc(
-                                            FFAppState()
-                                                .customerData
-                                                .customerRef!)
-                                        .set(createVehicleListRecordData(
-                                      createDate: getCurrentTimestamp,
-                                      status: 1,
-                                      subject: _model.textController1.text,
-                                      detail: _model.textController3.text,
-                                      vehicleNumber:
-                                          _model.textController2.text,
-                                      image: _model.urlList?.first,
-                                    ));
-                                    await showDialog(
-                                      context: context,
-                                      builder: (dialogContext) {
-                                        return Dialog(
-                                          elevation: 0,
-                                          insetPadding: EdgeInsets.zero,
-                                          backgroundColor: Colors.transparent,
-                                          alignment: AlignmentDirectional(
-                                                  0.0, 0.0)
-                                              .resolve(
-                                                  Directionality.of(context)),
-                                          child: WebViewAware(
-                                            child: InfoCustomViewWidget(
-                                              title: 'เพิ่มข้อมูลเรียบร้อยแล้ว',
-                                              status: 'success',
+                                  if (widget!.vehicleReference != null) {
+                                    if (_model.uploadedLocalFile != null &&
+                                        (_model.uploadedLocalFile.bytes
+                                                ?.isNotEmpty ??
+                                            false)) {
+                                      _model.urlList2 =
+                                          await actions.uploadImageToFirebase(
+                                        '${currentUserUid}/vehicle',
+                                        _model.tmpImageList.toList(),
+                                        false,
+                                      );
+                                      _model.image = _model.urlList2?.first;
+                                    }
+                                    if (_model.image != null &&
+                                        _model.image != '') {
+                                      await widget!.vehicleReference!
+                                          .update(createVehicleListRecordData(
+                                        updateDate: getCurrentTimestamp,
+                                        subject: _model.textController1.text,
+                                        detail: _model.textController3.text,
+                                        vehicleNumber:
+                                            _model.textController2.text,
+                                        image: _model.image,
+                                      ));
+                                      await showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return Dialog(
+                                            elevation: 0,
+                                            insetPadding: EdgeInsets.zero,
+                                            backgroundColor: Colors.transparent,
+                                            alignment: AlignmentDirectional(
+                                                    0.0, 0.0)
+                                                .resolve(
+                                                    Directionality.of(context)),
+                                            child: WebViewAware(
+                                              child: InfoCustomViewWidget(
+                                                title:
+                                                    'แก้ไขข้อมูลเรียบร้อยแล้ว',
+                                                status: 'success',
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    );
+                                          );
+                                        },
+                                      );
 
-                                    Navigator.pop(context, 'update');
+                                      Navigator.pop(context, 'update');
+                                    } else {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return Dialog(
+                                            elevation: 0,
+                                            insetPadding: EdgeInsets.zero,
+                                            backgroundColor: Colors.transparent,
+                                            alignment: AlignmentDirectional(
+                                                    0.0, 0.0)
+                                                .resolve(
+                                                    Directionality.of(context)),
+                                            child: WebViewAware(
+                                              child: InfoCustomViewWidget(
+                                                title: 'กรุณาแนบรูป',
+                                                status: 'error',
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }
                                   } else {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (dialogContext) {
-                                        return Dialog(
-                                          elevation: 0,
-                                          insetPadding: EdgeInsets.zero,
-                                          backgroundColor: Colors.transparent,
-                                          alignment: AlignmentDirectional(
-                                                  0.0, 0.0)
-                                              .resolve(
-                                                  Directionality.of(context)),
-                                          child: WebViewAware(
-                                            child: InfoCustomViewWidget(
-                                              title: 'กรุณาแนบรูป',
-                                              status: 'error',
+                                    if (_model.tmpImageList.isNotEmpty) {
+                                      _model.urlList =
+                                          await actions.uploadImageToFirebase(
+                                        '${currentUserUid}/vehicle',
+                                        _model.tmpImageList.toList(),
+                                        false,
+                                      );
+
+                                      await VehicleListRecord.createDoc(
+                                              FFAppState()
+                                                  .customerData
+                                                  .customerRef!)
+                                          .set(createVehicleListRecordData(
+                                        createDate: getCurrentTimestamp,
+                                        status: 1,
+                                        subject: _model.textController1.text,
+                                        detail: _model.textController3.text,
+                                        vehicleNumber:
+                                            _model.textController2.text,
+                                        image: _model.urlList?.first,
+                                      ));
+                                      await showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return Dialog(
+                                            elevation: 0,
+                                            insetPadding: EdgeInsets.zero,
+                                            backgroundColor: Colors.transparent,
+                                            alignment: AlignmentDirectional(
+                                                    0.0, 0.0)
+                                                .resolve(
+                                                    Directionality.of(context)),
+                                            child: WebViewAware(
+                                              child: InfoCustomViewWidget(
+                                                title:
+                                                    'เพิ่มข้อมูลเรียบร้อยแล้ว',
+                                                status: 'success',
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    );
+                                          );
+                                        },
+                                      );
+
+                                      Navigator.pop(context, 'update');
+                                    } else {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return Dialog(
+                                            elevation: 0,
+                                            insetPadding: EdgeInsets.zero,
+                                            backgroundColor: Colors.transparent,
+                                            alignment: AlignmentDirectional(
+                                                    0.0, 0.0)
+                                                .resolve(
+                                                    Directionality.of(context)),
+                                            child: WebViewAware(
+                                              child: InfoCustomViewWidget(
+                                                title: 'กรุณาแนบรูป',
+                                                status: 'error',
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }
                                   }
 
                                   safeSetState(() {});
