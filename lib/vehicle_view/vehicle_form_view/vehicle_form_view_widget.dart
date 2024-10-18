@@ -354,6 +354,13 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                                         image: Image.network(
                                                           _model.image!,
                                                           fit: BoxFit.contain,
+                                                          errorBuilder: (context,
+                                                                  error,
+                                                                  stackTrace) =>
+                                                              Image.asset(
+                                                            'assets/images/error_image.jpg',
+                                                            fit: BoxFit.contain,
+                                                          ),
                                                         ),
                                                         allowRotation: false,
                                                         tag: _model.image!,
@@ -375,6 +382,15 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                                       width: 80.0,
                                                       height: 80.0,
                                                       fit: BoxFit.cover,
+                                                      errorBuilder: (context,
+                                                              error,
+                                                              stackTrace) =>
+                                                          Image.asset(
+                                                        'assets/images/error_image.jpg',
+                                                        width: 80.0,
+                                                        height: 80.0,
+                                                        fit: BoxFit.cover,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -403,6 +419,17 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
                                                         title: 'ต้องการลบรูป?',
                                                       );
                                                       if (_model.isConfirm2!) {
+                                                        await widget!
+                                                            .vehicleReference!
+                                                            .update({
+                                                          ...mapToFirestore(
+                                                            {
+                                                              'image':
+                                                                  FieldValue
+                                                                      .delete(),
+                                                            },
+                                                          ),
+                                                        });
                                                         await FirebaseStorage
                                                             .instance
                                                             .refFromURL(
