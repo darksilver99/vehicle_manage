@@ -8,28 +8,27 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'info_custom_view_model.dart';
-export 'info_custom_view_model.dart';
+import 'confirm_custom_view_model.dart';
+export 'confirm_custom_view_model.dart';
 
-class InfoCustomViewWidget extends StatefulWidget {
-  const InfoCustomViewWidget({
+class ConfirmCustomViewWidget extends StatefulWidget {
+  const ConfirmCustomViewWidget({
     super.key,
     required this.title,
     this.detail,
-    required this.status,
   });
 
   final String? title;
   final String? detail;
-  final String? status;
 
   @override
-  State<InfoCustomViewWidget> createState() => _InfoCustomViewWidgetState();
+  State<ConfirmCustomViewWidget> createState() =>
+      _ConfirmCustomViewWidgetState();
 }
 
-class _InfoCustomViewWidgetState extends State<InfoCustomViewWidget>
+class _ConfirmCustomViewWidgetState extends State<ConfirmCustomViewWidget>
     with TickerProviderStateMixin {
-  late InfoCustomViewModel _model;
+  late ConfirmCustomViewModel _model;
 
   final animationsMap = <String, AnimationInfo>{};
 
@@ -42,7 +41,7 @@ class _InfoCustomViewWidgetState extends State<InfoCustomViewWidget>
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => InfoCustomViewModel());
+    _model = createModel(context, () => ConfirmCustomViewModel());
 
     animationsMap.addAll({
       'containerOnPageLoadAnimation': AnimationInfo(
@@ -52,42 +51,6 @@ class _InfoCustomViewWidgetState extends State<InfoCustomViewWidget>
             curve: Curves.easeInOut,
             delay: 0.0.ms,
             duration: 300.0.ms,
-            begin: Offset(-5.0, -5.0),
-            end: Offset(1.0, 1.0),
-          ),
-        ],
-      ),
-      'iconOnPageLoadAnimation1': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          ScaleEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 500.0.ms,
-            begin: Offset(-5.0, -5.0),
-            end: Offset(1.0, 1.0),
-          ),
-        ],
-      ),
-      'iconOnPageLoadAnimation2': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          ScaleEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 500.0.ms,
-            begin: Offset(-5.0, -5.0),
-            end: Offset(1.0, 1.0),
-          ),
-        ],
-      ),
-      'iconOnPageLoadAnimation3': AnimationInfo(
-        trigger: AnimationTrigger.onPageLoad,
-        effectsBuilder: () => [
-          ScaleEffect(
-            curve: Curves.easeInOut,
-            delay: 0.0.ms,
-            duration: 500.0.ms,
             begin: Offset(-5.0, -5.0),
             end: Offset(1.0, 1.0),
           ),
@@ -132,7 +95,7 @@ class _InfoCustomViewWidgetState extends State<InfoCustomViewWidget>
                         hoverColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
-                          Navigator.pop(context);
+                          Navigator.pop(context, false);
                         },
                         child: Icon(
                           Icons.close_rounded,
@@ -150,45 +113,6 @@ class _InfoCustomViewWidgetState extends State<InfoCustomViewWidget>
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Builder(
-                          builder: (context) {
-                            if (widget!.status == 'success') {
-                              return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 16.0),
-                                child: Icon(
-                                  Icons.check_circle_rounded,
-                                  color: FlutterFlowTheme.of(context).success,
-                                  size: 64.0,
-                                ).animateOnPageLoad(
-                                    animationsMap['iconOnPageLoadAnimation1']!),
-                              );
-                            } else if (widget!.status == 'error') {
-                              return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 16.0),
-                                child: Icon(
-                                  Icons.info_rounded,
-                                  color: FlutterFlowTheme.of(context).error,
-                                  size: 64.0,
-                                ).animateOnPageLoad(
-                                    animationsMap['iconOnPageLoadAnimation2']!),
-                              );
-                            } else {
-                              return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 16.0),
-                                child: Icon(
-                                  Icons.info_rounded,
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryText,
-                                  size: 64.0,
-                                ).animateOnPageLoad(
-                                    animationsMap['iconOnPageLoadAnimation3']!),
-                              );
-                            }
-                          },
-                        ),
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 8.0),
@@ -230,32 +154,82 @@ class _InfoCustomViewWidgetState extends State<InfoCustomViewWidget>
                         Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 0.0, 0.0),
-                          child: FFButtonWidget(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                            },
-                            text: 'ตกลง',
-                            options: FFButtonOptions(
-                              height: 40.0,
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  24.0, 0.0, 24.0, 0.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: FlutterFlowTheme.of(context).primary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Kanit',
-                                    color: Colors.white,
-                                    letterSpacing: 0.0,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 4.0, 0.0),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      Navigator.pop(context, false);
+                                    },
+                                    text: 'ยกเลิก',
+                                    options: FFButtonOptions(
+                                      height: 40.0,
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 0.0, 24.0, 0.0),
+                                      iconPadding:
+                                          EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 0.0),
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .override(
+                                            fontFamily: 'Kanit',
+                                            color: FlutterFlowTheme.of(context)
+                                                .secondaryText,
+                                            letterSpacing: 0.0,
+                                          ),
+                                      elevation: 3.0,
+                                      borderSide: BorderSide(
+                                        color: Colors.transparent,
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
                                   ),
-                              elevation: 3.0,
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 1.0,
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      4.0, 0.0, 0.0, 0.0),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      Navigator.pop(context, true);
+                                    },
+                                    text: 'ยืนยัน',
+                                    options: FFButtonOptions(
+                                      height: 40.0,
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 0.0, 24.0, 0.0),
+                                      iconPadding:
+                                          EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 0.0),
+                                      color:
+                                          FlutterFlowTheme.of(context).primary,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .override(
+                                            fontFamily: 'Kanit',
+                                            color: Colors.white,
+                                            letterSpacing: 0.0,
+                                          ),
+                                      elevation: 3.0,
+                                      borderSide: BorderSide(
+                                        color: Colors.transparent,
+                                        width: 1.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
