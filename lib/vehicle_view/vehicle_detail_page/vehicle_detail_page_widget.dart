@@ -227,6 +227,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                   ),
                                 ),
                                 FlutterFlowCalendar(
+                                  locale: 'th_TH',
                                   color: FlutterFlowTheme.of(context).primary,
                                   iconColor: FlutterFlowTheme.of(context)
                                       .secondaryText,
