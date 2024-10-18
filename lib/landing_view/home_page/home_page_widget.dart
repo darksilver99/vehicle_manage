@@ -264,7 +264,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   },
                                 ).then((value) => safeSetState(() {}));
 
+                                _model.isLoading = true;
+                                safeSetState(() {});
                                 await _model.initVehicle(context);
+                                _model.isLoading = false;
+                                safeSetState(() {});
                               },
                               child: Container(
                                 width: double.infinity,
