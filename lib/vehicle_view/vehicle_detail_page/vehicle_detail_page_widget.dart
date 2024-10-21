@@ -507,126 +507,129 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                   ),
                                 ),
                                 if (_model.vehicleDocument?.status == 1)
-                                  Container(
-                                    decoration: BoxDecoration(),
-                                    child: Visibility(
-                                      visible: !_model.isLoadingCalendar,
-                                      child: FlutterFlowCalendar(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primary,
-                                        iconColor: FlutterFlowTheme.of(context)
-                                            .secondaryText,
-                                        weekFormat: false,
-                                        weekStartsMonday: false,
-                                        rowHeight: 48.0,
-                                        onChange: (DateTimeRange?
-                                            newSelectedDate) async {
-                                          if (_model.calendarSelectedDay ==
-                                              newSelectedDate) {
-                                            return;
-                                          }
-                                          _model.calendarSelectedDay =
-                                              newSelectedDate;
-                                          if (_model
-                                                  .calendarSelectedDay!.start >=
-                                              functions.getStartDayTime(
-                                                  getCurrentTimestamp)) {
-                                            _model.isLoadingCalendar = true;
-                                            safeSetState(() {});
-                                            await showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              enableDrag: false,
-                                              useSafeArea: true,
-                                              context: context,
-                                              builder: (context) {
-                                                return WebViewAware(
-                                                  child: Padding(
-                                                    padding:
-                                                        MediaQuery.viewInsetsOf(
-                                                            context),
-                                                    child: RentListViewWidget(
-                                                      selectedDate: _model
-                                                          .calendarSelectedDay!
-                                                          .start,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ).then(
-                                                (value) => safeSetState(() {}));
-
-                                            _model.isLoading = true;
-                                            safeSetState(() {});
-                                            await _model.initVehicle(context);
-                                            _model.isLoading = false;
-                                            _model.isLoadingCalendar = false;
-                                            safeSetState(() {});
-                                          } else {
-                                            await showDialog(
-                                              context: context,
-                                              builder: (alertDialogContext) {
-                                                return WebViewAware(
-                                                  child: AlertDialog(
-                                                    title: Text('วันก่อน'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                alertDialogContext),
-                                                        child: Text('Ok'),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      if (!_model.isLoadingCalendar)
+                                        FlutterFlowCalendar(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primary,
+                                          iconColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondaryText,
+                                          weekFormat: false,
+                                          weekStartsMonday: false,
+                                          rowHeight: 48.0,
+                                          onChange: (DateTimeRange?
+                                              newSelectedDate) async {
+                                            if (_model.calendarSelectedDay ==
+                                                newSelectedDate) {
+                                              return;
+                                            }
+                                            _model.calendarSelectedDay =
+                                                newSelectedDate;
+                                            if (_model.calendarSelectedDay!
+                                                    .start >=
+                                                functions.getStartDayTime(
+                                                    getCurrentTimestamp)) {
+                                              _model.isLoadingCalendar = true;
+                                              safeSetState(() {});
+                                              await showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                enableDrag: false,
+                                                useSafeArea: true,
+                                                context: context,
+                                                builder: (context) {
+                                                  return WebViewAware(
+                                                    child: Padding(
+                                                      padding: MediaQuery
+                                                          .viewInsetsOf(
+                                                              context),
+                                                      child: RentListViewWidget(
+                                                        selectedDate: _model
+                                                            .calendarSelectedDay!
+                                                            .start,
                                                       ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          }
+                                                    ),
+                                                  );
+                                                },
+                                              ).then((value) =>
+                                                  safeSetState(() {}));
 
-                                          safeSetState(() {});
-                                        },
-                                        titleStyle: FlutterFlowTheme.of(context)
-                                            .titleLarge
-                                            .override(
-                                              fontFamily: 'Kanit',
-                                              fontSize: 22.0,
-                                              letterSpacing: 0.0,
-                                            ),
-                                        dayOfWeekStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .bodyLarge
-                                                .override(
-                                                  fontFamily: 'Kanit',
-                                                  fontSize: 12.0,
-                                                  letterSpacing: 0.0,
-                                                ),
-                                        dateStyle: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Kanit',
-                                              fontSize: 14.0,
-                                              letterSpacing: 0.0,
-                                            ),
-                                        selectedDateStyle: FlutterFlowTheme.of(
-                                                context)
-                                            .titleSmall
-                                            .override(
-                                              fontFamily: 'Kanit',
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryBackground,
-                                              letterSpacing: 0.0,
-                                            ),
-                                        inactiveDateStyle:
-                                            FlutterFlowTheme.of(context)
-                                                .labelMedium
-                                                .override(
-                                                  fontFamily: 'Kanit',
-                                                  letterSpacing: 0.0,
-                                                ),
-                                      ),
-                                    ),
+                                              _model.isLoading = true;
+                                              safeSetState(() {});
+                                              await _model.initVehicle(context);
+                                              _model.isLoading = false;
+                                              _model.isLoadingCalendar = false;
+                                              safeSetState(() {});
+                                            } else {
+                                              await showDialog(
+                                                context: context,
+                                                builder: (alertDialogContext) {
+                                                  return WebViewAware(
+                                                    child: AlertDialog(
+                                                      title: Text('วันก่อน'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  alertDialogContext),
+                                                          child: Text('Ok'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }
+
+                                            safeSetState(() {});
+                                          },
+                                          titleStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleLarge
+                                                  .override(
+                                                    fontFamily: 'Kanit',
+                                                    fontSize: 22.0,
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          dayOfWeekStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyLarge
+                                                  .override(
+                                                    fontFamily: 'Kanit',
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          dateStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMedium
+                                                  .override(
+                                                    fontFamily: 'Kanit',
+                                                    fontSize: 14.0,
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          selectedDateStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleSmall
+                                                  .override(
+                                                    fontFamily: 'Kanit',
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .primaryBackground,
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                          inactiveDateStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .labelMedium
+                                                  .override(
+                                                    fontFamily: 'Kanit',
+                                                    letterSpacing: 0.0,
+                                                  ),
+                                        ),
+                                    ],
                                   ),
                                 if (_model.vehicleDocument?.status == 3)
                                   StreamBuilder<List<RepairListRecord>>(
