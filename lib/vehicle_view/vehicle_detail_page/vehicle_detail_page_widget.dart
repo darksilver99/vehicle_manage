@@ -543,9 +543,8 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                       MediaQuery.viewInsetsOf(
                                                           context),
                                                   child: RentListViewWidget(
-                                                    selectedDate: _model
-                                                        .calendarSelectedDay!
-                                                        .start,
+                                                    selectedDate:
+                                                        _model.selectedDate!,
                                                   ),
                                                 ),
                                               );
