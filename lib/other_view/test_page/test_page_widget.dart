@@ -150,6 +150,8 @@ class _TestPageWidgetState extends State<TestPageWidget> {
                       );
                     },
                   ).then((value) => safeSetState(() {}));
+
+                  await Future.delayed(const Duration(milliseconds: 1000));
                 },
                 text: 'Button',
                 options: FFButtonOptions(
