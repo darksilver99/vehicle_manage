@@ -32,7 +32,7 @@ class RepairListRecord extends FirestoreRecord {
   }
 
   static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('${FFAppState().tmpVehicleRef}/repair_list');
+      FirebaseFirestore.instance.collection('${FFAppState().tmpVehicleRef!.path}/repair_list');
 
   static Stream<RepairListRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => RepairListRecord.fromSnapshot(s));
