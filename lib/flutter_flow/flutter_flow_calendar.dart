@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:vehicle_manage/custom_toon.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 
 DateTime kFirstDay = DateTime(1970, 1, 1);
@@ -33,6 +34,7 @@ class FlutterFlowCalendar extends StatefulWidget {
     this.titleStyle,
     this.rowHeight,
     this.locale,
+    this.markerDate,
   }) : super(key: key);
 
   final OnTapCallback? onTap;
@@ -50,6 +52,7 @@ class FlutterFlowCalendar extends StatefulWidget {
   final TextStyle? titleStyle;
   final double? rowHeight;
   final String? locale;
+  final List<DateTime>? markerDate;
 
   @override
   State<StatefulWidget> createState() => _FlutterFlowCalendarState();
@@ -59,6 +62,9 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
   late DateTime focusedDay;
   late DateTime selectedDay;
   late DateTimeRange selectedRange;
+
+  DateTime today = DateTime.now();
+  DateTime midnightToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   @override
   void initState() {
@@ -190,6 +196,21 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
                 }
               }
             },
+            calendarBuilders: CalendarBuilders(
+                markerBuilder: (context, day, focusedDay) {
+                  return buildMarker(day, widget.markerDate);
+                },
+                defaultBuilder:  (context, day, focusedDay) {
+                  if (day.isBefore(midnightToday)) {
+                    return Center(
+                      child: Text(
+                        '${day.day}',
+                        style: TextStyle(color: Colors.grey), // Gray color for past dates
+                      ),
+                    );
+                  }
+                }
+            ),
           ),
         ],
       );

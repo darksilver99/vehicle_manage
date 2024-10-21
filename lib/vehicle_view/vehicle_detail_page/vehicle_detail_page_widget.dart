@@ -531,14 +531,14 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                           ),
                                         );
                                       },
-                                      ).then((value) => safeSetState(() async {
-                                        _model.isLoading = true;
-                                        safeSetState(() {});
-                                        await _model.initVehicle(context);
-                                        _model.isLoading = false;
-                                        safeSetState(() {});
-                                      }));
+                                      ).then((value) => safeSetState(() {}));
+                                      _model.isLoading = true;
+                                      safeSetState(() {});
+                                      await _model.initVehicle(context);
+                                      _model.isLoading = false;
+                                      safeSetState(() {});
                                     },
+                                    markerDate: _model.markerDateList,
                                     color: FlutterFlowTheme.of(context).primary,
                                     iconColor: FlutterFlowTheme.of(context)
                                         .secondaryText,
