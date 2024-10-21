@@ -12,10 +12,13 @@ extension DateTimeExtension on DateTime {
   DateTime get endOfDay => DateTime(year, month, day, 23, 59);
 }
 
+typedef OnTapCallback = void Function(DateTime?);
+
 class FlutterFlowCalendar extends StatefulWidget {
   const FlutterFlowCalendar({
     Key? key,
     required this.color,
+    this.onTap,
     this.onChange,
     this.initialDate,
     this.weekFormat = false,
@@ -31,6 +34,7 @@ class FlutterFlowCalendar extends StatefulWidget {
     this.locale,
   }) : super(key: key);
 
+  final OnTapCallback? onTap;
   final bool weekFormat;
   final bool weekStartsMonday;
   final bool twoRowHeader;
@@ -177,6 +181,7 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
               }
             },
             onDaySelected: (newSelectedDay, focused) {
+              widget.onTap!(newSelectedDay);
               if (!isSameDay(selectedDay, newSelectedDay)) {
                 setSelectedDay(newSelectedDay);
                 if (focusedDay.startOfDay != focused.startOfDay) {
