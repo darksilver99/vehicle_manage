@@ -50,6 +50,9 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
       FFAppState().tmpVehicleRef = widget!.vehicleReference;
       _model.isLoading = false;
       safeSetState(() {});
+      await Future.delayed(const Duration(milliseconds: 100));
+      _model.isLoadingCalendar = false;
+      safeSetState(() {});
     });
   }
 
