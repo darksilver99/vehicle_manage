@@ -66,25 +66,30 @@ class RentListRecord extends FirestoreRecord {
   String get cardDetail => _cardDetail ?? '';
   bool hasCardDetail() => _cardDetail != null;
 
-  // "rent_payment_date" field.
-  DateTime? _rentPaymentDate;
-  DateTime? get rentPaymentDate => _rentPaymentDate;
-  bool hasRentPaymentDate() => _rentPaymentDate != null;
+  // "rent_date_list" field.
+  List<DateTime>? _rentDateList;
+  List<DateTime> get rentDateList => _rentDateList ?? const [];
+  bool hasRentDateList() => _rentDateList != null;
 
-  // "rent_payment_slip" field.
-  String? _rentPaymentSlip;
-  String get rentPaymentSlip => _rentPaymentSlip ?? '';
-  bool hasRentPaymentSlip() => _rentPaymentSlip != null;
+  // "delete_date" field.
+  DateTime? _deleteDate;
+  DateTime? get deleteDate => _deleteDate;
+  bool hasDeleteDate() => _deleteDate != null;
 
   // "rent_price" field.
   double? _rentPrice;
   double get rentPrice => _rentPrice ?? 0.0;
   bool hasRentPrice() => _rentPrice != null;
 
-  // "rent_date_list" field.
-  List<DateTime>? _rentDateList;
-  List<DateTime> get rentDateList => _rentDateList ?? const [];
-  bool hasRentDateList() => _rentDateList != null;
+  // "rent_payment_slip" field.
+  String? _rentPaymentSlip;
+  String get rentPaymentSlip => _rentPaymentSlip ?? '';
+  bool hasRentPaymentSlip() => _rentPaymentSlip != null;
+
+  // "rent_payment_date" field.
+  DateTime? _rentPaymentDate;
+  DateTime? get rentPaymentDate => _rentPaymentDate;
+  bool hasRentPaymentDate() => _rentPaymentDate != null;
 
   void _initializeFields() {
     _createDate = snapshotData['create_date'] as DateTime?;
@@ -97,10 +102,11 @@ class RentListRecord extends FirestoreRecord {
     _startDate = snapshotData['start_date'] as DateTime?;
     _endDate = snapshotData['end_date'] as DateTime?;
     _cardDetail = snapshotData['card_detail'] as String?;
-    _rentPaymentDate = snapshotData['rent_payment_date'] as DateTime?;
-    _rentPaymentSlip = snapshotData['rent_payment_slip'] as String?;
-    _rentPrice = castToType<double>(snapshotData['rent_price']);
     _rentDateList = getDataList(snapshotData['rent_date_list']);
+    _deleteDate = snapshotData['delete_date'] as DateTime?;
+    _rentPrice = castToType<double>(snapshotData['rent_price']);
+    _rentPaymentSlip = snapshotData['rent_payment_slip'] as String?;
+    _rentPaymentDate = snapshotData['rent_payment_date'] as DateTime?;
   }
 
   static CollectionReference get collection =>
@@ -148,9 +154,10 @@ Map<String, dynamic> createRentListRecordData({
   DateTime? startDate,
   DateTime? endDate,
   String? cardDetail,
-  DateTime? rentPaymentDate,
-  String? rentPaymentSlip,
+  DateTime? deleteDate,
   double? rentPrice,
+  String? rentPaymentSlip,
+  DateTime? rentPaymentDate,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -164,9 +171,10 @@ Map<String, dynamic> createRentListRecordData({
       'start_date': startDate,
       'end_date': endDate,
       'card_detail': cardDetail,
-      'rent_payment_date': rentPaymentDate,
-      'rent_payment_slip': rentPaymentSlip,
+      'delete_date': deleteDate,
       'rent_price': rentPrice,
+      'rent_payment_slip': rentPaymentSlip,
+      'rent_payment_date': rentPaymentDate,
     }.withoutNulls,
   );
 
@@ -189,10 +197,11 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
         e1?.startDate == e2?.startDate &&
         e1?.endDate == e2?.endDate &&
         e1?.cardDetail == e2?.cardDetail &&
-        e1?.rentPaymentDate == e2?.rentPaymentDate &&
-        e1?.rentPaymentSlip == e2?.rentPaymentSlip &&
+        listEquality.equals(e1?.rentDateList, e2?.rentDateList) &&
+        e1?.deleteDate == e2?.deleteDate &&
         e1?.rentPrice == e2?.rentPrice &&
-        listEquality.equals(e1?.rentDateList, e2?.rentDateList);
+        e1?.rentPaymentSlip == e2?.rentPaymentSlip &&
+        e1?.rentPaymentDate == e2?.rentPaymentDate;
   }
 
   @override
@@ -207,10 +216,11 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
         e?.startDate,
         e?.endDate,
         e?.cardDetail,
-        e?.rentPaymentDate,
-        e?.rentPaymentSlip,
+        e?.rentDateList,
+        e?.deleteDate,
         e?.rentPrice,
-        e?.rentDateList
+        e?.rentPaymentSlip,
+        e?.rentPaymentDate
       ]);
 
   @override
