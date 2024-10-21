@@ -1118,20 +1118,18 @@ class _RentDetailViewWidgetState extends State<RentDetailViewWidget> {
                                                     false,
                                                   );
 
-                                                  await RentListRecord
-                                                      .collection
-                                                      .doc()
-                                                      .set(
+                                                  await widget!
+                                                      .rentDocument!.reference
+                                                      .update(
                                                           createRentListRecordData(
-                                                        rentPrice: double
-                                                            .tryParse(_model
-                                                                .textController
-                                                                .text),
-                                                        rentPaymentSlip: _model
-                                                            .urlList?.first,
-                                                        rentPaymentDate:
-                                                            getCurrentTimestamp,
-                                                      ));
+                                                    rentPrice: double.tryParse(
+                                                        _model.textController
+                                                            .text),
+                                                    rentPaymentSlip:
+                                                        _model.urlList?.first,
+                                                    rentPaymentDate:
+                                                        getCurrentTimestamp,
+                                                  ));
                                                   await showDialog(
                                                     context: context,
                                                     builder: (dialogContext) {
