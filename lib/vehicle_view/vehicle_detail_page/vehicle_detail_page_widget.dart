@@ -565,6 +565,10 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                               safeSetState(() {});
                                               await _model.initVehicle(context);
                                               _model.isLoading = false;
+                                              safeSetState(() {});
+                                              await Future.delayed(
+                                                  const Duration(
+                                                      milliseconds: 100));
                                               _model.isLoadingCalendar = false;
                                               safeSetState(() {});
                                             } else {
