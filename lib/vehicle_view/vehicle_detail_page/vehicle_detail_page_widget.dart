@@ -529,34 +529,37 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                         if (_model.selectedDate! >=
                                             functions.getStartDayTime(
                                                 getCurrentTimestamp)) {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            useSafeArea: true,
-                                            context: context,
-                                            builder: (context) {
-                                              return WebViewAware(
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child: RentListViewWidget(
-                                                    selectedDate:
-                                                        _model.selectedDate!,
+                                          if (_model.selectedDate != null) {
+                                            await showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              enableDrag: false,
+                                              useSafeArea: true,
+                                              context: context,
+                                              builder: (context) {
+                                                return WebViewAware(
+                                                  child: Padding(
+                                                    padding:
+                                                        MediaQuery.viewInsetsOf(
+                                                            context),
+                                                    child: RentListViewWidget(
+                                                      selectedDate:
+                                                          _model.selectedDate!,
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                          ).then(
-                                              (value) => safeSetState(() {}));
+                                                );
+                                              },
+                                            ).then(
+                                                (value) => safeSetState(() {}));
 
-                                          _model.selectedDate = null;
-                                          _model.isLoading = true;
-                                          safeSetState(() {});
-                                          await _model.initVehicle(context);
-                                          _model.isLoading = false;
-                                          safeSetState(() {});
+                                            _model.selectedDate = null;
+                                            _model.isLoading = true;
+                                            safeSetState(() {});
+                                            await _model.initVehicle(context);
+                                            _model.isLoading = false;
+                                            safeSetState(() {});
+                                          }
                                         } else {
                                           await showDialog(
                                             context: context,

@@ -575,7 +575,8 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                               FlutterFlowTheme.of(context)
                                                   .primary,
                                           headerForegroundColor:
-                                              FlutterFlowTheme.of(context).info,
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
                                           headerTextStyle:
                                               FlutterFlowTheme.of(context)
                                                   .headlineLarge
