@@ -104,7 +104,7 @@ class RentListRecord extends FirestoreRecord {
   }
 
   static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('rent_list');
+      FirebaseFirestore.instance.collection('${FFAppState().tmpVehicleRef!.path}/rent_list');
 
   static Stream<RentListRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => RentListRecord.fromSnapshot(s));
