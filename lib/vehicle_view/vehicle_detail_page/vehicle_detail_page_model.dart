@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/other_view/confirm_repair_view/confirm_repair_view_widget.dart';
 import '/other_view/info_custom_view/info_custom_view_widget.dart';
+import '/rent_view/rent_list_view/rent_list_view_widget.dart';
 import '/vehicle_view/vehicle_form_view/vehicle_form_view_widget.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
