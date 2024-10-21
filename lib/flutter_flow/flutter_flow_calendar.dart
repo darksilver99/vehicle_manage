@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 
 DateTime kFirstDay = DateTime(1970, 1, 1);
 DateTime kLastDay = DateTime(2100, 1, 1);
@@ -181,7 +182,7 @@ class _FlutterFlowCalendarState extends State<FlutterFlowCalendar> {
               }
             },
             onDaySelected: (newSelectedDay, focused) {
-              widget.onTap!(newSelectedDay);
+              widget.onTap!(functions.getStartDayTime(newSelectedDay));
               if (!isSameDay(selectedDay, newSelectedDay)) {
                 setSelectedDay(newSelectedDay);
                 if (focusedDay.startOfDay != focused.startOfDay) {

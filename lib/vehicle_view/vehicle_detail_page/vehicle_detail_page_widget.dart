@@ -1,3 +1,5 @@
+import 'package:vehicle_manage/rent_view/rent_list_view/rent_list_view_widget.dart';
+
 import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_calendar.dart';
@@ -508,6 +510,35 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                 if (_model.vehicleDocument?.status == 1)
                                   FlutterFlowCalendar(
                                     locale: 'th_TH',
+                                    onTap: (selectedDate) async {
+                                      print("selectedDate : ${selectedDate}");
+                                      await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      useSafeArea: true,
+                                      context: context,
+                                      builder: (context) {
+                                        return WebViewAware(
+                                          child: GestureDetector(
+                                            onTap: () => FocusScope.of(context).unfocus(),
+                                            child: Padding(
+                                              padding: MediaQuery.viewInsetsOf(context),
+                                              child: RentListViewWidget(
+                                                selectedDate: selectedDate,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      ).then((value) => safeSetState(() async {
+                                        _model.isLoading = true;
+                                        safeSetState(() {});
+                                        await _model.initVehicle(context);
+                                        _model.isLoading = false;
+                                        safeSetState(() {});
+                                      }));
+                                    },
                                     color: FlutterFlowTheme.of(context).primary,
                                     iconColor: FlutterFlowTheme.of(context)
                                         .secondaryText,
