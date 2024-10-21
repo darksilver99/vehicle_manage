@@ -112,7 +112,7 @@ class _RentListViewWidgetState extends State<RentListViewWidget> {
                         ),
                   ),
                 ),
-                if (widget!.selectedDate! >= getCurrentTimestamp)
+                if (getCurrentTimestamp >= widget!.selectedDate!)
                   FFButtonWidget(
                     onPressed: () async {
                       await showModalBottomSheet(
