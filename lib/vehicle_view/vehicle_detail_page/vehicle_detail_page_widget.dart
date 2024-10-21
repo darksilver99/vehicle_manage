@@ -522,6 +522,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                   .secondaryText,
                                           weekFormat: false,
                                           weekStartsMonday: false,
+                                          initialDate: null,
                                           rowHeight: 48.0,
                                           onChange: (DateTimeRange?
                                               newSelectedDate) async {
