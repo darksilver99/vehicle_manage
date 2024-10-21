@@ -27,6 +27,8 @@ class VehicleDetailPageModel extends FlutterFlowModel<VehicleDetailPageWidget> {
 
   VehicleListRecord? vehicleDocument;
 
+  bool isLoadingCalendar = true;
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Action Block - confirmBlock] action in Container widget.
