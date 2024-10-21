@@ -526,7 +526,6 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                       _model.selectedDate =
                                           _model.calendarSelectedDay?.start;
                                       if (_model.selectedDate != null) {
-                                        _model.selectedDate = null;
                                         if (_model.selectedDate! >=
                                             functions.getStartDayTime(
                                                 getCurrentTimestamp)) {
@@ -552,6 +551,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                           ).then(
                                               (value) => safeSetState(() {}));
 
+                                          _model.selectedDate = null;
                                           _model.isLoading = true;
                                           safeSetState(() {});
                                           await _model.initVehicle(context);
@@ -576,6 +576,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                               );
                                             },
                                           );
+                                          _model.selectedDate = null;
                                         }
                                       }
                                       safeSetState(() {});
