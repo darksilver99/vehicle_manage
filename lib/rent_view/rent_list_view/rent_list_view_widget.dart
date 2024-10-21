@@ -253,7 +253,11 @@ class _RentListViewWidgetState extends State<RentListViewWidget> {
                                       0.0, 0.0, 8.0, 0.0),
                                   child: Icon(
                                     Icons.circle,
-                                    color: FlutterFlowTheme.of(context).primary,
+                                    color: listViewRentListRecord
+                                                .rentPaymentDate !=
+                                            null
+                                        ? FlutterFlowTheme.of(context).primary
+                                        : FlutterFlowTheme.of(context).error,
                                     size: 24.0,
                                   ),
                                 ),
@@ -313,28 +317,29 @@ class _RentListViewWidgetState extends State<RentListViewWidget> {
                                                         .bodyMedium
                                                         .override(
                                                           fontFamily: 'Kanit',
+                                                          color: listViewRentListRecord
+                                                                      .rentPaymentDate !=
+                                                                  null
+                                                              ? FlutterFlowTheme
+                                                                      .of(
+                                                                          context)
+                                                                  .primary
+                                                              : FlutterFlowTheme
+                                                                      .of(context)
+                                                                  .error,
                                                           letterSpacing: 0.0,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
                                                   )
                                                 ],
-                                                style: FlutterFlowTheme.of(
-                                                        context)
-                                                    .bodyMedium
-                                                    .override(
-                                                      fontFamily: 'Kanit',
-                                                      color: listViewRentListRecord
-                                                                  .rentPaymentDate !=
-                                                              null
-                                                          ? FlutterFlowTheme.of(
-                                                                  context)
-                                                              .primary
-                                                          : FlutterFlowTheme.of(
-                                                                  context)
-                                                              .error,
-                                                      letterSpacing: 0.0,
-                                                    ),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily: 'Kanit',
+                                                          letterSpacing: 0.0,
+                                                        ),
                                               ),
                                               maxLines: 2,
                                             ),
