@@ -522,57 +522,62 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                       }
                                       _model.calendarSelectedDay =
                                           newSelectedDate;
-                                      if (_model.calendarSelectedDay!.start >=
-                                          functions.getStartDayTime(
-                                              getCurrentTimestamp)) {
-                                        await showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          enableDrag: false,
-                                          useSafeArea: true,
-                                          context: context,
-                                          builder: (context) {
-                                            return WebViewAware(
-                                              child: Padding(
-                                                padding:
-                                                    MediaQuery.viewInsetsOf(
-                                                        context),
-                                                child: RentListViewWidget(
-                                                  selectedDate: _model
-                                                      .calendarSelectedDay!
-                                                      .start,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ).then((value) => safeSetState(() {}));
-
-                                        _model.isLoading = true;
-                                        safeSetState(() {});
-                                        await _model.initVehicle(context);
-                                        _model.isLoading = false;
-                                        safeSetState(() {});
-                                      } else {
-                                        await showDialog(
-                                          context: context,
-                                          builder: (alertDialogContext) {
-                                            return WebViewAware(
-                                              child: AlertDialog(
-                                                title: Text('วันก่อน'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.pop(
-                                                            alertDialogContext),
-                                                    child: Text('Ok'),
+                                      _model.selectedDate =
+                                          _model.calendarSelectedDay?.start;
+                                      if (_model.selectedDate != null) {
+                                        _model.selectedDate = null;
+                                        if (_model.selectedDate! >=
+                                            functions.getStartDayTime(
+                                                getCurrentTimestamp)) {
+                                          await showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            enableDrag: false,
+                                            useSafeArea: true,
+                                            context: context,
+                                            builder: (context) {
+                                              return WebViewAware(
+                                                child: Padding(
+                                                  padding:
+                                                      MediaQuery.viewInsetsOf(
+                                                          context),
+                                                  child: RentListViewWidget(
+                                                    selectedDate: _model
+                                                        .calendarSelectedDay!
+                                                        .start,
                                                   ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      }
+                                                ),
+                                              );
+                                            },
+                                          ).then(
+                                              (value) => safeSetState(() {}));
 
+                                          _model.isLoading = true;
+                                          safeSetState(() {});
+                                          await _model.initVehicle(context);
+                                          _model.isLoading = false;
+                                          safeSetState(() {});
+                                        } else {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (alertDialogContext) {
+                                              return WebViewAware(
+                                                child: AlertDialog(
+                                                  title: Text('วันก่อน'),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              alertDialogContext),
+                                                      child: Text('Ok'),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }
+                                      }
                                       safeSetState(() {});
                                     },
                                     titleStyle: FlutterFlowTheme.of(context)
