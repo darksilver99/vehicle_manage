@@ -189,7 +189,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                 await action_blocks
                                                     .confirmBlock(
                                               context,
-                                              title: 'ต',
+                                              title: 'ต้องการเปิดใช้งาน?',
                                             );
                                             if (_model.isConfirm3!) {
                                               await widget!.vehicleReference!
