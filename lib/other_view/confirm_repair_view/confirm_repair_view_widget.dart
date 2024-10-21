@@ -255,6 +255,13 @@ class _ConfirmRepairViewWidgetState extends State<ConfirmRepairViewWidget>
                                         4.0, 0.0, 0.0, 0.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
+                                        if (_model.formKey.currentState ==
+                                                null ||
+                                            !_model.formKey.currentState!
+                                                .validate()) {
+                                          return;
+                                        }
+
                                         await RepairListRecord.collection
                                             .doc()
                                             .set(createRepairListRecordData(
