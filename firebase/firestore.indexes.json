@@ -1,6 +1,20 @@
 {
   "indexes": [
     {
+      "collectionGroup": "rent_list",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "rent_date_list",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "start_date",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "vehicle_list",
       "queryScope": "COLLECTION",
       "fields": [

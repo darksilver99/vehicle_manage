@@ -137,3 +137,22 @@ List<VehicleDataStruct> filterVehicleList(
   }).toList();
   return searchedList;
 }
+
+List<DateTime> getDateList(
+  DateTime startDate,
+  DateTime endDate,
+) {
+  List<DateTime> dateList = [];
+
+  DateTime currentDate =
+      DateTime(startDate.year, startDate.month, startDate.day);
+
+  while (
+      currentDate.isBefore(endDate) || currentDate.isAtSameMomentAs(endDate)) {
+    dateList
+        .add(DateTime(currentDate.year, currentDate.month, currentDate.day));
+    currentDate = currentDate.add(Duration(days: 1));
+  }
+
+  return dateList;
+}

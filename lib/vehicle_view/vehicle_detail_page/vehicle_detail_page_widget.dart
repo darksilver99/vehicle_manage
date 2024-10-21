@@ -6,6 +6,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/other_view/confirm_repair_view/confirm_repair_view_widget.dart';
 import '/other_view/info_custom_view/info_custom_view_widget.dart';
+import '/rent_view/rent_list_view/rent_list_view_widget.dart';
 import '/vehicle_view/vehicle_form_view/vehicle_form_view_widget.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
@@ -521,8 +522,57 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                       }
                                       _model.calendarSelectedDay =
                                           newSelectedDate;
+                                      if (_model.calendarSelectedDay!.start >=
+                                          functions.getStartDayTime(
+                                              getCurrentTimestamp)) {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          useSafeArea: true,
+                                          context: context,
+                                          builder: (context) {
+                                            return WebViewAware(
+                                              child: Padding(
+                                                padding:
+                                                    MediaQuery.viewInsetsOf(
+                                                        context),
+                                                child: RentListViewWidget(
+                                                  selectedDate: _model
+                                                      .calendarSelectedDay!
+                                                      .start,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ).then((value) => safeSetState(() {}));
 
-                                      safeSetState(() {});
+                                        _model.isLoading = true;
+                                        safeSetState(() {});
+                                        await _model.initVehicle(context);
+                                        _model.isLoading = false;
+                                        safeSetState(() {});
+                                      } else {
+                                        await showDialog(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return WebViewAware(
+                                              child: AlertDialog(
+                                                title: Text('วันก่อน'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            alertDialogContext),
+                                                    child: Text('Ok'),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+
                                       safeSetState(() {});
                                     },
                                     titleStyle: FlutterFlowTheme.of(context)

@@ -81,6 +81,11 @@ class RentListRecord extends FirestoreRecord {
   double get rentPrice => _rentPrice ?? 0.0;
   bool hasRentPrice() => _rentPrice != null;
 
+  // "rent_date_list" field.
+  List<DateTime>? _rentDateList;
+  List<DateTime> get rentDateList => _rentDateList ?? const [];
+  bool hasRentDateList() => _rentDateList != null;
+
   void _initializeFields() {
     _createDate = snapshotData['create_date'] as DateTime?;
     _status = castToType<int>(snapshotData['status']);
@@ -95,6 +100,7 @@ class RentListRecord extends FirestoreRecord {
     _rentPaymentDate = snapshotData['rent_payment_date'] as DateTime?;
     _rentPaymentSlip = snapshotData['rent_payment_slip'] as String?;
     _rentPrice = castToType<double>(snapshotData['rent_price']);
+    _rentDateList = getDataList(snapshotData['rent_date_list']);
   }
 
   static CollectionReference get collection =>
@@ -172,6 +178,7 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
 
   @override
   bool equals(RentListRecord? e1, RentListRecord? e2) {
+    const listEquality = ListEquality();
     return e1?.createDate == e2?.createDate &&
         e1?.status == e2?.status &&
         e1?.firstName == e2?.firstName &&
@@ -184,7 +191,8 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
         e1?.cardDetail == e2?.cardDetail &&
         e1?.rentPaymentDate == e2?.rentPaymentDate &&
         e1?.rentPaymentSlip == e2?.rentPaymentSlip &&
-        e1?.rentPrice == e2?.rentPrice;
+        e1?.rentPrice == e2?.rentPrice &&
+        listEquality.equals(e1?.rentDateList, e2?.rentDateList);
   }
 
   @override
@@ -201,7 +209,8 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
         e?.cardDetail,
         e?.rentPaymentDate,
         e?.rentPaymentSlip,
-        e?.rentPrice
+        e?.rentPrice,
+        e?.rentDateList
       ]);
 
   @override
