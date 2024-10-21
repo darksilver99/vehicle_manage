@@ -73,19 +73,11 @@ class RentFormViewModel extends FlutterFlowModel<RentFormViewWidget> {
     return null;
   }
 
-  DateTime? datePicked1;
-  DateTime? datePicked2;
+  DateTime? datePicked;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode5;
   TextEditingController? textController5;
   String? Function(BuildContext, String?)? textController5Validator;
-  String? _textController5Validator(BuildContext context, String? val) {
-    if (val == null || val.isEmpty) {
-      return 'Field is required';
-    }
-
-    return null;
-  }
 
   @override
   void initState(BuildContext context) {
@@ -93,7 +85,6 @@ class RentFormViewModel extends FlutterFlowModel<RentFormViewWidget> {
     textController2Validator = _textController2Validator;
     textController3Validator = _textController3Validator;
     textController4Validator = _textController4Validator;
-    textController5Validator = _textController5Validator;
   }
 
   @override

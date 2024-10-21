@@ -42,6 +42,12 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
     super.initState();
     _model = createModel(context, () => RentFormViewModel());
 
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.startDate = widget!.selectedDate;
+      safeSetState(() {});
+    });
+
     _model.textController1 ??= TextEditingController();
     _model.textFieldFocusNode1 ??= FocusNode();
 
@@ -471,125 +477,56 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                     ),
                                   ],
                                 ),
-                                InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    final _datePicked1Date =
-                                        await showDatePicker(
-                                      context: context,
-                                      initialDate: (widget!.selectedDate ??
-                                          DateTime.now()),
-                                      firstDate: (widget!.selectedDate ??
-                                          DateTime(1900)),
-                                      lastDate: DateTime(2050),
-                                      builder: (context, child) {
-                                        return wrapInMaterialDatePickerTheme(
-                                          context,
-                                          child!,
-                                          headerBackgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                          headerForegroundColor:
-                                              FlutterFlowTheme.of(context).info,
-                                          headerTextStyle:
-                                              FlutterFlowTheme.of(context)
-                                                  .headlineLarge
-                                                  .override(
-                                                    fontFamily: 'Kanit',
-                                                    fontSize: 32.0,
-                                                    letterSpacing: 0.0,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                          pickerBackgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .secondaryBackground,
-                                          pickerForegroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primaryText,
-                                          selectedDateTimeBackgroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
-                                          selectedDateTimeForegroundColor:
-                                              FlutterFlowTheme.of(context).info,
-                                          actionButtonForegroundColor:
-                                              FlutterFlowTheme.of(context)
-                                                  .primaryText,
-                                          iconSize: 24.0,
-                                        );
-                                      },
-                                    );
-
-                                    if (_datePicked1Date != null) {
-                                      safeSetState(() {
-                                        _model.datePicked1 = DateTime(
-                                          _datePicked1Date.year,
-                                          _datePicked1Date.month,
-                                          _datePicked1Date.day,
-                                        );
-                                      });
-                                    }
-                                    if (_model.datePicked1 != null) {
-                                      _model.startDate = functions
-                                          .getStartDayTime(_model.datePicked1!);
-                                      safeSetState(() {});
-                                    }
-                                  },
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 54.0,
-                                    decoration: BoxDecoration(
+                                Container(
+                                  width: double.infinity,
+                                  height: 54.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(
                                       color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .alternate,
-                                        width: 1.0,
-                                      ),
+                                          .alternate,
+                                      width: 1.0,
                                     ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          16.0, 0.0, 16.0, 0.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 0.0, 8.0, 0.0),
-                                            child: Icon(
-                                              Icons.date_range_rounded,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .primaryText,
-                                              size: 32.0,
-                                            ),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 0.0, 16.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 8.0, 0.0),
+                                          child: Icon(
+                                            Icons.date_range_rounded,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                            size: 32.0,
                                           ),
-                                          Expanded(
-                                            child: Text(
-                                              valueOrDefault<String>(
-                                                _model.startDate != null
-                                                    ? functions.dateTh(
-                                                        _model.startDate)
-                                                    : 'เลือกวันที่',
-                                                '-',
-                                              ),
-                                              maxLines: 1,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily: 'Kanit',
-                                                        fontSize: 22.0,
-                                                        letterSpacing: 0.0,
-                                                      ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            valueOrDefault<String>(
+                                              _model.startDate != null
+                                                  ? functions
+                                                      .dateTh(_model.startDate)
+                                                  : 'เลือกวันที่',
+                                              '-',
                                             ),
+                                            maxLines: 1,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Kanit',
+                                                  fontSize: 22.0,
+                                                  letterSpacing: 0.0,
+                                                ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -622,7 +559,7 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                   hoverColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
                                   onTap: () async {
-                                    final _datePicked2Date =
+                                    final _datePickedDate =
                                         await showDatePicker(
                                       context: context,
                                       initialDate: (widget!.selectedDate ??
@@ -667,18 +604,18 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                       },
                                     );
 
-                                    if (_datePicked2Date != null) {
+                                    if (_datePickedDate != null) {
                                       safeSetState(() {
-                                        _model.datePicked2 = DateTime(
-                                          _datePicked2Date.year,
-                                          _datePicked2Date.month,
-                                          _datePicked2Date.day,
+                                        _model.datePicked = DateTime(
+                                          _datePickedDate.year,
+                                          _datePickedDate.month,
+                                          _datePickedDate.day,
                                         );
                                       });
                                     }
-                                    if (_model.datePicked2 != null) {
+                                    if (_model.datePicked != null) {
                                       _model.endDate = functions
-                                          .getEndDayTime(_model.datePicked2!);
+                                          .getEndDayTime(_model.datePicked!);
                                       safeSetState(() {});
                                     }
                                   },
@@ -829,27 +766,7 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                           .validate()) {
                                     return;
                                   }
-                                  if (_model.datePicked1 == null) {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (alertDialogContext) {
-                                        return WebViewAware(
-                                          child: AlertDialog(
-                                            title: Text('เลือกวันที่เริ่มต้น'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    alertDialogContext),
-                                                child: Text('ตกลง'),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                    return;
-                                  }
-                                  if (_model.datePicked2 == null) {
+                                  if (_model.datePicked == null) {
                                     await showDialog(
                                       context: context,
                                       builder: (alertDialogContext) {
