@@ -45,8 +45,8 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
 
     // On page load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await _model.initVehicle(context);
       FFAppState().tmpVehicleRef = widget!.vehicleReference;
+      await _model.initVehicle(context);
       _model.isLoading = false;
       safeSetState(() {});
     });
