@@ -564,102 +564,105 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                               letterSpacing: 0.0,
                                             ),
                                   ),
-                                StreamBuilder<List<RepairListRecord>>(
-                                  stream: queryRepairListRecord(
-                                    queryBuilder: (repairListRecord) =>
-                                        repairListRecord.orderBy('create_date',
-                                            descending: true),
-                                    singleRecord: true,
-                                  ),
-                                  builder: (context, snapshot) {
-                                    // Customize what your widget looks like when it's loading.
-                                    if (!snapshot.hasData) {
-                                      return Center(
-                                        child: SizedBox(
-                                          width: 50.0,
-                                          height: 50.0,
-                                          child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                              FlutterFlowTheme.of(context)
-                                                  .primary,
+                                if (_model.vehicleDocument?.status == 3)
+                                  StreamBuilder<List<RepairListRecord>>(
+                                    stream: queryRepairListRecord(
+                                      queryBuilder: (repairListRecord) =>
+                                          repairListRecord.orderBy(
+                                              'create_date',
+                                              descending: true),
+                                      singleRecord: true,
+                                    ),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 50.0,
+                                            height: 50.0,
+                                            child: CircularProgressIndicator(
+                                              valueColor:
+                                                  AlwaysStoppedAnimation<Color>(
+                                                FlutterFlowTheme.of(context)
+                                                    .primary,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    }
-                                    List<RepairListRecord>
-                                        columnRepairListRecordList =
-                                        snapshot.data!;
-                                    // Return an empty Container when the item does not exist.
-                                    if (snapshot.data!.isEmpty) {
-                                      return Container();
-                                    }
-                                    final columnRepairListRecord =
-                                        columnRepairListRecordList.isNotEmpty
-                                            ? columnRepairListRecordList.first
-                                            : null;
+                                        );
+                                      }
+                                      List<RepairListRecord>
+                                          columnRepairListRecordList =
+                                          snapshot.data!;
+                                      // Return an empty Container when the item does not exist.
+                                      if (snapshot.data!.isEmpty) {
+                                        return Container();
+                                      }
+                                      final columnRepairListRecord =
+                                          columnRepairListRecordList.isNotEmpty
+                                              ? columnRepairListRecordList.first
+                                              : null;
 
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: Image.asset(
-                                            'assets/images/11667633_20945487.jpg',
-                                            width: 180.0,
-                                            fit: BoxFit.cover,
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.asset(
+                                              'assets/images/11667633_20945487.jpg',
+                                              width: 180.0,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                'อยู่ในระหว่างปรับปรุง : ${columnRepairListRecord?.detail}',
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily: 'Kanit',
-                                                          fontSize: 18.0,
-                                                          letterSpacing: 0.0,
-                                                        ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                valueOrDefault<String>(
-                                                  functions.dateTimeTh(
-                                                      columnRepairListRecord
-                                                          ?.createDate),
-                                                  '-',
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  'อยู่ในระหว่างปรับปรุง : ${columnRepairListRecord?.detail}',
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily: 'Kanit',
+                                                        fontSize: 18.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
                                                 ),
-                                                style:
-                                                    FlutterFlowTheme.of(context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily: 'Kanit',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                          fontSize: 12.0,
-                                                          letterSpacing: 0.0,
-                                                        ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ),
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  valueOrDefault<String>(
+                                                    functions.dateTimeTh(
+                                                        columnRepairListRecord
+                                                            ?.createDate),
+                                                    '-',
+                                                  ),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily: 'Kanit',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                        fontSize: 12.0,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
                               ],
                             ),
                           ),
