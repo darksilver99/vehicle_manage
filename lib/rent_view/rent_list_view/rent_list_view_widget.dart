@@ -2,6 +2,7 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/other_view/no_data_view/no_data_view_widget.dart';
 import '/rent_view/rent_form_view/rent_form_view_widget.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
@@ -178,6 +179,9 @@ class _RentListViewWidgetState extends State<RentListViewWidget> {
                 }
                 List<RentListRecord> listViewRentListRecordList =
                     snapshot.data!;
+                if (listViewRentListRecordList.isEmpty) {
+                  return NoDataViewWidget();
+                }
 
                 return ListView.separated(
                   padding: EdgeInsets.fromLTRB(
