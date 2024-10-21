@@ -85,6 +85,12 @@ class FFAppState extends ChangeNotifier {
   set appBuildVersion(int value) {
     _appBuildVersion = value;
   }
+
+  DocumentReference? _tmpVehicleRef;
+  DocumentReference? get tmpVehicleRef => _tmpVehicleRef;
+  set tmpVehicleRef(DocumentReference? value) {
+    _tmpVehicleRef = value;
+  }
 }
 
 void _safeInit(Function() initializeField) {

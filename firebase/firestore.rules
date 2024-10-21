@@ -34,16 +34,18 @@ service cloud.firestore {
     }
 
 
-    match /customer_list/{parent}/rent_list/{document} {
+    match /rent_list/{document} {
       allow create: if true;
       allow read: if true;
-      allow write: if false;
-      allow delete: if false;
+      allow write: if true;
+      allow delete: if true;
     }
 
-    match /{path=**}/rent_list/{document} {
+    match /repair_list/{document} {
+      allow create: if true;
       allow read: if true;
+      allow write: if true;
+      allow delete: if true;
     }
-
   }
 }
