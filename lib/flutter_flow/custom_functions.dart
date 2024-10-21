@@ -156,3 +156,16 @@ List<DateTime> getDateList(
 
   return dateList;
 }
+
+List<DateTime> getMarkerList(List<RentListRecord> dataList) {
+  Set<DateTime> markerSet = {};
+
+  for (var record in dataList) {
+    markerSet.addAll(record.rentDateList);
+  }
+
+  List<DateTime> markerList = markerSet.toList();
+  markerList.sort();
+
+  return markerList;
+}
