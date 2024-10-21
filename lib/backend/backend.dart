@@ -10,6 +10,7 @@ import 'schema/config_record.dart';
 import 'schema/customer_list_record.dart';
 import 'schema/vehicle_list_record.dart';
 import 'schema/rent_list_record.dart';
+import 'schema/repair_list_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart' hide Order;
@@ -23,6 +24,7 @@ export 'schema/config_record.dart';
 export 'schema/customer_list_record.dart';
 export 'schema/vehicle_list_record.dart';
 export 'schema/rent_list_record.dart';
+export 'schema/repair_list_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Future<int> queryUsersRecordCount({
@@ -177,24 +179,22 @@ Future<List<VehicleListRecord>> queryVehicleListRecordOnce({
 
 /// Functions to query RentListRecords (as a Stream and as a Future).
 Future<int> queryRentListRecordCount({
-  DocumentReference? parent,
   Query Function(Query)? queryBuilder,
   int limit = -1,
 }) =>
     queryCollectionCount(
-      RentListRecord.collection(parent),
+      RentListRecord.collection,
       queryBuilder: queryBuilder,
       limit: limit,
     );
 
 Stream<List<RentListRecord>> queryRentListRecord({
-  DocumentReference? parent,
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      RentListRecord.collection(parent),
+      RentListRecord.collection,
       RentListRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
@@ -202,14 +202,50 @@ Stream<List<RentListRecord>> queryRentListRecord({
     );
 
 Future<List<RentListRecord>> queryRentListRecordOnce({
-  DocumentReference? parent,
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      RentListRecord.collection(parent),
+      RentListRecord.collection,
       RentListRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+/// Functions to query RepairListRecords (as a Stream and as a Future).
+Future<int> queryRepairListRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      RepairListRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<RepairListRecord>> queryRepairListRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      RepairListRecord.collection,
+      RepairListRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<RepairListRecord>> queryRepairListRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      RepairListRecord.collection,
+      RepairListRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,

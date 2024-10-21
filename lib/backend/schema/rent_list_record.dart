@@ -26,11 +26,6 @@ class RentListRecord extends FirestoreRecord {
   int get status => _status ?? 0;
   bool hasStatus() => _status != null;
 
-  // "vehicle_ref" field.
-  DocumentReference? _vehicleRef;
-  DocumentReference? get vehicleRef => _vehicleRef;
-  bool hasVehicleRef() => _vehicleRef != null;
-
   // "first_name" field.
   String? _firstName;
   String get firstName => _firstName ?? '';
@@ -86,12 +81,9 @@ class RentListRecord extends FirestoreRecord {
   double get rentPrice => _rentPrice ?? 0.0;
   bool hasRentPrice() => _rentPrice != null;
 
-  DocumentReference get parentReference => reference.parent.parent!;
-
   void _initializeFields() {
     _createDate = snapshotData['create_date'] as DateTime?;
     _status = castToType<int>(snapshotData['status']);
-    _vehicleRef = snapshotData['vehicle_ref'] as DocumentReference?;
     _firstName = snapshotData['first_name'] as String?;
     _lastName = snapshotData['last_name'] as String?;
     _idCardNumber = snapshotData['id_card_number'] as String?;
@@ -105,13 +97,8 @@ class RentListRecord extends FirestoreRecord {
     _rentPrice = castToType<double>(snapshotData['rent_price']);
   }
 
-  static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
-      parent != null
-          ? parent.collection('rent_list')
-          : FirebaseFirestore.instance.collectionGroup('rent_list');
-
-  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
-      parent.collection('rent_list').doc(id);
+  static CollectionReference get collection =>
+      FirebaseFirestore.instance.collection('rent_list');
 
   static Stream<RentListRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => RentListRecord.fromSnapshot(s));
@@ -147,7 +134,6 @@ class RentListRecord extends FirestoreRecord {
 Map<String, dynamic> createRentListRecordData({
   DateTime? createDate,
   int? status,
-  DocumentReference? vehicleRef,
   String? firstName,
   String? lastName,
   String? idCardNumber,
@@ -164,7 +150,6 @@ Map<String, dynamic> createRentListRecordData({
     <String, dynamic>{
       'create_date': createDate,
       'status': status,
-      'vehicle_ref': vehicleRef,
       'first_name': firstName,
       'last_name': lastName,
       'id_card_number': idCardNumber,
@@ -189,7 +174,6 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
   bool equals(RentListRecord? e1, RentListRecord? e2) {
     return e1?.createDate == e2?.createDate &&
         e1?.status == e2?.status &&
-        e1?.vehicleRef == e2?.vehicleRef &&
         e1?.firstName == e2?.firstName &&
         e1?.lastName == e2?.lastName &&
         e1?.idCardNumber == e2?.idCardNumber &&
@@ -207,7 +191,6 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
   int hash(RentListRecord? e) => const ListEquality().hash([
         e?.createDate,
         e?.status,
-        e?.vehicleRef,
         e?.firstName,
         e?.lastName,
         e?.idCardNumber,
