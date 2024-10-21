@@ -314,7 +314,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                     Icons.build,
                                                     color: FlutterFlowTheme.of(
                                                             context)
-                                                        .info,
+                                                        .warning,
                                                     size: 22.0,
                                                   ),
                                                   Text(
@@ -327,7 +327,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                           fontFamily: 'Kanit',
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .info,
+                                                              .warning,
                                                           fontSize: 12.0,
                                                           letterSpacing: 0.0,
                                                         ),
@@ -387,7 +387,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                 Icons.mode_edit,
                                                 color:
                                                     FlutterFlowTheme.of(context)
-                                                        .warning,
+                                                        .info,
                                                 size: 22.0,
                                               ),
                                               Text(
@@ -400,7 +400,7 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                                           fontFamily: 'Kanit',
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .warning,
+                                                              .info,
                                                           fontSize: 12.0,
                                                           letterSpacing: 0.0,
                                                         ),
