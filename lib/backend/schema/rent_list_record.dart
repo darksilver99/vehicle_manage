@@ -71,11 +71,6 @@ class RentListRecord extends FirestoreRecord {
   List<DateTime> get rentDateList => _rentDateList ?? const [];
   bool hasRentDateList() => _rentDateList != null;
 
-  // "delete_date" field.
-  DateTime? _deleteDate;
-  DateTime? get deleteDate => _deleteDate;
-  bool hasDeleteDate() => _deleteDate != null;
-
   // "rent_price" field.
   double? _rentPrice;
   double get rentPrice => _rentPrice ?? 0.0;
@@ -103,7 +98,6 @@ class RentListRecord extends FirestoreRecord {
     _endDate = snapshotData['end_date'] as DateTime?;
     _cardDetail = snapshotData['card_detail'] as String?;
     _rentDateList = getDataList(snapshotData['rent_date_list']);
-    _deleteDate = snapshotData['delete_date'] as DateTime?;
     _rentPrice = castToType<double>(snapshotData['rent_price']);
     _rentPaymentSlip = snapshotData['rent_payment_slip'] as String?;
     _rentPaymentDate = snapshotData['rent_payment_date'] as DateTime?;
@@ -154,7 +148,6 @@ Map<String, dynamic> createRentListRecordData({
   DateTime? startDate,
   DateTime? endDate,
   String? cardDetail,
-  DateTime? deleteDate,
   double? rentPrice,
   String? rentPaymentSlip,
   DateTime? rentPaymentDate,
@@ -171,7 +164,6 @@ Map<String, dynamic> createRentListRecordData({
       'start_date': startDate,
       'end_date': endDate,
       'card_detail': cardDetail,
-      'delete_date': deleteDate,
       'rent_price': rentPrice,
       'rent_payment_slip': rentPaymentSlip,
       'rent_payment_date': rentPaymentDate,
@@ -198,7 +190,6 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
         e1?.endDate == e2?.endDate &&
         e1?.cardDetail == e2?.cardDetail &&
         listEquality.equals(e1?.rentDateList, e2?.rentDateList) &&
-        e1?.deleteDate == e2?.deleteDate &&
         e1?.rentPrice == e2?.rentPrice &&
         e1?.rentPaymentSlip == e2?.rentPaymentSlip &&
         e1?.rentPaymentDate == e2?.rentPaymentDate;
@@ -217,7 +208,6 @@ class RentListRecordDocumentEquality implements Equality<RentListRecord> {
         e?.endDate,
         e?.cardDetail,
         e?.rentDateList,
-        e?.deleteDate,
         e?.rentPrice,
         e?.rentPaymentSlip,
         e?.rentPaymentDate

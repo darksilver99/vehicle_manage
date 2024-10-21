@@ -124,11 +124,7 @@ class _RentDetailViewWidgetState extends State<RentDetailViewWidget> {
                                 detail: 'หากลบแล้วจะไม่สามารถเรียกคืนข้อมูลได้',
                               );
                               if (_model.isConfirm!) {
-                                await widget!.rentDocument!.reference
-                                    .update(createRentListRecordData(
-                                  status: 2,
-                                  deleteDate: getCurrentTimestamp,
-                                ));
+                                await widget!.rentDocument!.reference.delete();
                                 await showDialog(
                                   context: context,
                                   builder: (dialogContext) {
