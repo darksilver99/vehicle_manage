@@ -26,6 +26,16 @@ class VehicleDetailPageModel extends FlutterFlowModel<VehicleDetailPageWidget> {
 
   VehicleListRecord? vehicleDocument;
 
+  List<DateTime> markerDateList = [];
+  void addToMarkerDateList(DateTime item) => markerDateList.add(item);
+  void removeFromMarkerDateList(DateTime item) => markerDateList.remove(item);
+  void removeAtIndexFromMarkerDateList(int index) =>
+      markerDateList.removeAt(index);
+  void insertAtIndexInMarkerDateList(int index, DateTime item) =>
+      markerDateList.insert(index, item);
+  void updateMarkerDateListAtIndex(int index, Function(DateTime) updateFn) =>
+      markerDateList[index] = updateFn(markerDateList[index]);
+
   ///  State fields for stateful widgets in this page.
 
   // Stores action output result for [Action Block - confirmBlock] action in Container widget.
