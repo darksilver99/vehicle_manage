@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:webviewx_plus/webviewx_plus.dart';
@@ -607,9 +608,10 @@ class _VehicleDetailPageWidgetState extends State<VehicleDetailPageWidget> {
                                           ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
-                                            child: Image.asset(
-                                              'assets/images/11667633_20945487.jpg',
+                                            child: SvgPicture.asset(
+                                              'assets/images/11667633_20945487.svg',
                                               width: 180.0,
+                                              height: 180.0,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
