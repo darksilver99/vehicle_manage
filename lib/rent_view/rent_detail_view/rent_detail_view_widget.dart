@@ -108,8 +108,22 @@ class _RentDetailViewWidgetState extends State<RentDetailViewWidget> {
                         EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        Expanded(
+                          child: Text(
+                            'รายละเอียดการจอง',
+                            maxLines: 1,
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Kanit',
+                                  fontSize: 28.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                        ),
                         Builder(
                           builder: (context) => InkWell(
                             splashColor: Colors.transparent,
@@ -951,6 +965,10 @@ class _RentDetailViewWidgetState extends State<RentDetailViewWidget> {
                                                     });
                                                   },
                                                   text: 'แนบรูป',
+                                                  icon: Icon(
+                                                    Icons.photo,
+                                                    size: 15.0,
+                                                  ),
                                                   options: FFButtonOptions(
                                                     height: 40.0,
                                                     padding:
