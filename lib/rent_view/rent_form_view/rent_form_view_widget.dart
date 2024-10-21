@@ -595,7 +595,8 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                               FlutterFlowTheme.of(context)
                                                   .primary,
                                           selectedDateTimeForegroundColor:
-                                              FlutterFlowTheme.of(context).info,
+                                              FlutterFlowTheme.of(context)
+                                                  .primaryBackground,
                                           actionButtonForegroundColor:
                                               FlutterFlowTheme.of(context)
                                                   .primaryText,
