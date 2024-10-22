@@ -337,7 +337,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       context,
                                     );
 
-                                    context.pushNamed(
+                                    await context.pushNamed(
                                       'VehicleDetailPage',
                                       queryParameters: {
                                         'vehicleReference': serializeParam(
