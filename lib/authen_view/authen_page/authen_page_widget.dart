@@ -1,5 +1,6 @@
 import '/auth/firebase_auth/auth_util.dart';
 import '/authen_view/authen_background_view/authen_background_view_widget.dart';
+import '/authen_view/forget_password_view/forget_password_view_widget.dart';
 import '/authen_view/register_view/register_view_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -65,7 +66,7 @@ class _AuthenPageWidgetState extends State<AuthenPageWidget> {
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      color: Color(0xE6FFFFFF),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Padding(
@@ -293,19 +294,49 @@ class _AuthenPageWidgetState extends State<AuthenPageWidget> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
-                                    child: Text(
-                                      'ลืมรหัสผ่าน?',
-                                      textAlign: TextAlign.end,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Kanit',
-                                            color: FlutterFlowTheme.of(context)
-                                                .link,
-                                            letterSpacing: 0.0,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
+                                    child: Builder(
+                                      builder: (context) => InkWell(
+                                        splashColor: Colors.transparent,
+                                        focusColor: Colors.transparent,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        onTap: () async {
+                                          await showDialog(
+                                            context: context,
+                                            builder: (dialogContext) {
+                                              return Dialog(
+                                                elevation: 0,
+                                                insetPadding: EdgeInsets.zero,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                alignment: AlignmentDirectional(
+                                                        0.0, 0.0)
+                                                    .resolve(Directionality.of(
+                                                        context)),
+                                                child: WebViewAware(
+                                                  child:
+                                                      ForgetPasswordViewWidget(),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Text(
+                                          'ลืมรหัสผ่าน?',
+                                          textAlign: TextAlign.end,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Kanit',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .link,
+                                                letterSpacing: 0.0,
+                                                decoration:
+                                                    TextDecoration.underline,
+                                              ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
