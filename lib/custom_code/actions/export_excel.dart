@@ -16,7 +16,6 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:work_time_check/solo/solo_function.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 
 Future<String> exportExcel(
@@ -48,26 +47,11 @@ Future<String> exportExcel(
     return '';
   }
 
-  //getData
-  QuerySnapshot<Map<String, dynamic>> rs = await FirebaseFirestore.instance
-      .collection("${customerRef.path}/transacation_list")
-      .where('date_in', isGreaterThanOrEqualTo: startDate)
-      .where('date_in', isLessThanOrEqualTo: endDate)
-      .orderBy('date_in', descending: false)
-      .get();
-
-  //get member
-  QuerySnapshot<Map<String, dynamic>> rsMember = await FirebaseFirestore
-      .instance
-      .collection("${customerRef.path}/member_list")
-      .orderBy('create_date', descending: true)
-      .get();
-
   var excel = Excel.createExcel();
   Sheet sheetObject = excel['Sheet1'];
 
   CellStyle cellStyle = CellStyle(
-    backgroundColorHex: '#1AFF1A',
+    backgroundColorHex: ExcelColor.fromHexString("#1AFF1A"),
     horizontalAlign: HorizontalAlign.Center,
     bold: true,
     leftBorder: exBorder.Border(borderStyle: exBorder.BorderStyle.Thin),
@@ -77,23 +61,27 @@ Future<String> exportExcel(
   );
 
   // Add headers
-  List<String> header = ["ชื่อ-สกุล"];
-
-  //List<String> dateRange = getDateRange(startDate!, endDate!);
-  List<DateTime> dateRange = getDateRange2(startDate!, endDate!);
-  if (dateRange.length > 60) {
-    return 'youshallnotpass';
-  }
+  List<String> header = [
+    "ชื่อ-สกุลผู้เช่า",
+    "เลขประจำตัวประชาชน",
+    "เบอร์โทรศัพท์",
+    "วันที่เช่า",
+    "รถ",
+    "สถานะ",
+    "วันที่ชำระเงิน",
+    "จำนวน",
+    "หลักฐานการชำระเงิน"
+  ];
 
   // title
   var cell =
       sheetObject.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 0));
   cell.value = TextCellValue(
-      'รายชื่อพนักงาน ลงเวลาเข้า/ออกงาน ประจำวันที่ ${functions.dateTh(startDate)} ถึง ${functions.dateTh(endDate)}');
+      'รายงานสรุปการเช่า ประจำวันที่ ${functions.dateTh(startDate)} ถึง ${functions.dateTh(endDate)}');
   cell.cellStyle = CellStyle(fontSize: 22, bold: true);
 
-  for (var i = 0; i < dateRange.length; i++) {
-    header.add('${functions.dateTh(dateRange[i])}');
+  for (var i = 0; i < header.length; i++) {
+    header.add(header[i]);
   }
 
   for (var i = 0; i < header.length; i++) {
@@ -103,73 +91,7 @@ Future<String> exportExcel(
     cell.cellStyle = cellStyle;
   }
 
-  // Add body
-  for (int i = 0; i < rs.size; i++) {
-    break;
-    var rsUser = await FirebaseFirestore.instance
-        .doc(rs.docs[i].data()["create_by"].path)
-        .get();
-
-    for (int j = 0; j < header.length; j++) {
-      var cell = sheetObject
-          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 2));
-      cell.cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Left);
-      cell.value = TextCellValue(
-          '${rsUser.data()!["first_name"]} ${rsUser.data()!["last_name"]}(${rsUser.data()!["display_name"]})');
-
-      // if (dateTimeFormat('dd/MM/yyyy', rs.docs[i].data()["date_in"].toDate()) == header[j]) {
-      if (functions.dateTh(rs.docs[i].data()["date_in"].toDate()) ==
-          header[j]) {
-        var cell = sheetObject
-            .cell(CellIndex.indexByColumnRow(columnIndex: j, rowIndex: i + 2));
-        var dateIn =
-            dateTimeFormat('Hm', rs.docs[i].data()["date_in"].toDate());
-        var dateOut = rs.docs[i].data().containsKey("date_out")
-            ? dateTimeFormat('Hm', rs.docs[i].data()["date_out"].toDate())
-            : "-";
-
-        cell.cellStyle = CellStyle(textWrapping: TextWrapping.WrapText);
-
-        /*DateTime? tmpUpdateDate = rs.docs[i].data().containsKey("date_out") ? rs.docs[i].data()["date_out"].toDate() : null;
-        if (isLate(rsCompany, rs.docs[i].data()["create_date"].toDate(), tmpUpdateDate)) {
-          cell.cellStyle = CellStyle(fontColorHex: "#ff0000", textWrapping: TextWrapping.WrapText);
-        }*/
-
-        var detailIn = rs.docs[i].data().containsKey("detail_in")
-            ? rs.docs[i].data()["detail_in"]
-            : " -";
-        var detailOut = rs.docs[i].data().containsKey("detail_out")
-            ? rs.docs[i].data()["detail_out"]
-            : " -";
-
-        var startEndTimeText = "เข้างาน : $dateIn | ออกงาน : $dateOut";
-        var startEndDetailText =
-            "รายละเอียด(เข้างาน) : ${(detailIn != '') ? detailIn : " -"}\n รายละเอียด(ออกงาน) :${(detailOut != '') ? detailOut : " -"}";
-        var durationText = "";
-        if (rs.docs[i].data().containsKey("date_out")) {
-          durationText =
-              "ระยะเวลาทำงาน : ${functions.formatDuration(functions.millisecondsBetween(rs.docs[i].data()["date_in"].toDate(), rs.docs[i].data()["date_out"].toDate()))}";
-        }
-        //var photoIn = "รูปเข้างาน : ${rs.docs[i].data()["photo_in"]}";
-        //var photoOut = "รูปออกงาน : ${rs.docs[i].data().containsKey("photo_out") && rs.docs[i].data()["photo_out"].trim() != "" ? rs.docs[i].data()["photo_out"] : " -"}";
-        if (rs.docs[i].data()["status"] == 3) {
-          cell.value = TextCellValue("ลางาน");
-        } else {
-          cell.value = TextCellValue(
-              "$startEndTimeText\n$startEndDetailText\n$durationText");
-        }
-      }
-
-      //เสาทิตใส่สี
-      if (isWeekend2(header[j])) {
-        var cell2 = sheetObject
-            .cell(CellIndex.indexByColumnRow(columnIndex: j, rowIndex: i + 2));
-        cell2.cellStyle = CellStyle(backgroundColorHex: "#ffdfdf");
-      }
-    }
-  }
-
-  // new body
+  // body
   for (int i = 0; i < rsMember.size; i++) {
     var cell = sheetObject
         .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 2));
@@ -183,11 +105,6 @@ Future<String> exportExcel(
           textWrapping: TextWrapping.WrapText,
           verticalAlign: VerticalAlign.Top,
           horizontalAlign: HorizontalAlign.Left);
-
-      //เสาทิตใส่สี
-      if (isWeekend2('${functions.dateTh(dateRange[j])}')) {
-        cell.cellStyle = CellStyle(backgroundColorHex: "#ffdfdf");
-      }
 
       var transactionInThisDate = filterSnapshotByDate(rs,
           DateTime(dateRange[j].year, dateRange[j].month, dateRange[j].day));
@@ -275,7 +192,7 @@ Future<String> exportExcel(
   //Directory dir = Directory('/storage/emulated/0/Download');
   List<int>? fileBytes = excel.save();
   var path = File(
-      '${dir.path}/ลงเวลาเข้างาน${functions.dateTh(startDate)}ถึง${functions.dateTh(endDate)}.xlsx')
+      '${dir.path}/รายงานสรุปการเช่า${functions.dateTh(startDate)}ถึง${functions.dateTh(endDate)}.xlsx')
     ..createSync(recursive: true)
     ..writeAsBytesSync(fileBytes!);
 
