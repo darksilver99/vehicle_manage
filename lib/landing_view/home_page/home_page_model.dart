@@ -1,4 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/authen_view/authen_background_view/authen_background_view_widget.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -64,14 +65,21 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
+  // Model for AuthenBackgroundView component.
+  late AuthenBackgroundViewModel authenBackgroundViewModel;
 
   @override
-  void initState(BuildContext context) {}
+  void initState(BuildContext context) {
+    authenBackgroundViewModel =
+        createModel(context, () => AuthenBackgroundViewModel());
+  }
 
   @override
   void dispose() {
     textFieldFocusNode?.dispose();
     textController?.dispose();
+
+    authenBackgroundViewModel.dispose();
   }
 
   /// Action blocks.
