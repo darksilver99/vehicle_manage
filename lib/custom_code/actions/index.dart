@@ -4,3 +4,4 @@ export 'hide_key_board.dart' show hideKeyBoard;
 export 'push_replacement.dart' show pushReplacement;
 export 'set_app_version.dart' show setAppVersion;
 export 'upload_image_to_firebase.dart' show uploadImageToFirebase;
+export 'get_is_free_today.dart' show getIsFreeToday;
