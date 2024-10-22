@@ -54,10 +54,11 @@
 	<true/>
 
 	<key>NSCameraUsageDescription</key>
-    <string>In order to take a picture or video, this app requires permission to access the camera.</string>
+    <string>We need access to your camera to take a picture of vehicle.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>In order to upload data, this app requires permission to access the photo library.</string>
-
+    <string>We need access to your photo library to select a picture of vehicle.</string>
+    <key>NSContactsUsageDescription</key>
+    <string>We need access to your contacts to contact friends you can connect with in the app.</string>
 
 
 	<key>UILaunchStoryboardName</key>
