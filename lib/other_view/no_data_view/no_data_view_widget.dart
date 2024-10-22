@@ -45,21 +45,44 @@ class _NoDataViewWidgetState extends State<NoDataViewWidget> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.info_rounded,
-              color: FlutterFlowTheme.of(context).secondaryText,
-              size: 42.0,
+            Material(
+              color: Colors.transparent,
+              elevation: 1.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                alignment: AlignmentDirectional(0.0, 0.0),
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.info_rounded,
+                        color: FlutterFlowTheme.of(context).secondaryText,
+                        size: 42.0,
+                      ),
+                      Text(
+                        'ไม่มีข้อมูล',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Kanit',
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              fontSize: 24.0,
+                              letterSpacing: 0.0,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ],
-        ),
-        Text(
-          'ไม่มีข้อมูล',
-          style: FlutterFlowTheme.of(context).bodyMedium.override(
-                fontFamily: 'Kanit',
-                color: FlutterFlowTheme.of(context).secondaryText,
-                fontSize: 24.0,
-                letterSpacing: 0.0,
-              ),
         ),
       ],
     );
