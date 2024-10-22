@@ -569,6 +569,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           },
                         ),
                       ),
+                    if (_model.isLoading)
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          height: 100.0,
+                          decoration: BoxDecoration(),
+                        ),
+                      ),
                   ],
                 ),
               ],
