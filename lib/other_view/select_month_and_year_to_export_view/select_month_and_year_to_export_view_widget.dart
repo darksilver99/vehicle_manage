@@ -43,7 +43,7 @@ class _SelectMonthAndYearToExportViewWidgetState
 
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      _model.startDate = functions.getFirstDayOfMonth(_model.startDate!);
+      _model.startDate = functions.getFirstDayOfMonth(getCurrentTimestamp);
       _model.endDate = functions.getLastDayOfMonth(getCurrentTimestamp);
       safeSetState(() {});
     });

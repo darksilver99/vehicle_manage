@@ -49,6 +49,7 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
     // On component load action.
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       _model.startDate = widget!.selectedDate;
+      _model.endDate = widget!.selectedDate;
       safeSetState(() {});
     });
 
