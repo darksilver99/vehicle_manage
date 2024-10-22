@@ -47,7 +47,7 @@ class _NoDataViewWidgetState extends State<NoDataViewWidget> {
           children: [
             Material(
               color: Colors.transparent,
-              elevation: 1.0,
+              elevation: 3.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
