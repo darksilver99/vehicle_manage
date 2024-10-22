@@ -987,26 +987,6 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                           .validate()) {
                                     return;
                                   }
-                                  if (_model.datePicked == null) {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (alertDialogContext) {
-                                        return WebViewAware(
-                                          child: AlertDialog(
-                                            title: Text('เลือกวันที่สิ้นสุด'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    alertDialogContext),
-                                                child: Text('ตกลง'),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                    return;
-                                  }
 
                                   await RentListRecord.collection.doc().set({
                                     ...createRentListRecordData(
