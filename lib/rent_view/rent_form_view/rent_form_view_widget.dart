@@ -1,9 +1,13 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/upload_data.dart';
 import '/other_view/info_custom_view/info_custom_view_widget.dart';
+import '/other_view/o_c_r_alert_view/o_c_r_alert_view_widget.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -73,6 +77,8 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -147,6 +153,218 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
+                          Builder(
+                            builder: (context) => Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 16.0),
+                              child: FFButtonWidget(
+                                onPressed: () async {
+                                  final selectedMedia =
+                                      await selectMediaWithSourceBottomSheet(
+                                    context: context,
+                                    maxWidth: 600.00,
+                                    allowPhoto: true,
+                                  );
+                                  if (selectedMedia != null &&
+                                      selectedMedia.every((m) =>
+                                          validateFileFormat(
+                                              m.storagePath, context))) {
+                                    safeSetState(
+                                        () => _model.isDataUploading = true);
+                                    var selectedUploadedFiles =
+                                        <FFUploadedFile>[];
+
+                                    try {
+                                      selectedUploadedFiles = selectedMedia
+                                          .map((m) => FFUploadedFile(
+                                                name: m.storagePath
+                                                    .split('/')
+                                                    .last,
+                                                bytes: m.bytes,
+                                                height: m.dimensions?.height,
+                                                width: m.dimensions?.width,
+                                                blurHash: m.blurHash,
+                                              ))
+                                          .toList();
+                                    } finally {
+                                      _model.isDataUploading = false;
+                                    }
+                                    if (selectedUploadedFiles.length ==
+                                        selectedMedia.length) {
+                                      safeSetState(() {
+                                        _model.uploadedLocalFile =
+                                            selectedUploadedFiles.first;
+                                      });
+                                    } else {
+                                      safeSetState(() {});
+                                      return;
+                                    }
+                                  }
+
+                                  if (_model.uploadedLocalFile != null &&
+                                      (_model.uploadedLocalFile.bytes
+                                              ?.isNotEmpty ??
+                                          false)) {
+                                    _model.base64Result =
+                                        await actions.getBase64(
+                                      _model.uploadedLocalFile,
+                                    );
+                                    _model.apiResult2ve =
+                                        await GetORCDataCall.call(
+                                      api: FFAppState().configData.ocrApi,
+                                      base64: _model.base64Result,
+                                    );
+
+                                    if ((_model.apiResult2ve?.succeeded ??
+                                        true)) {
+                                      if (!FFAppState().isSkipOCRAlert) {
+                                        await showDialog(
+                                          context: context,
+                                          builder: (dialogContext) {
+                                            return Dialog(
+                                              elevation: 0,
+                                              insetPadding: EdgeInsets.zero,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              alignment:
+                                                  AlignmentDirectional(0.0, 0.0)
+                                                      .resolve(
+                                                          Directionality.of(
+                                                              context)),
+                                              child: WebViewAware(
+                                                child: OCRAlertViewWidget(
+                                                  title: FFAppState()
+                                                      .configData
+                                                      .ocrAlertText
+                                                      .first,
+                                                  detail: FFAppState()
+                                                      .configData
+                                                      .ocrAlertText
+                                                      .last,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+                                      if (getJsonField(
+                                            (_model.apiResult2ve?.jsonBody ??
+                                                ''),
+                                            r'''$.data.id_card_number''',
+                                          ) !=
+                                          null) {
+                                        safeSetState(() {
+                                          _model.textController1?.text =
+                                              getJsonField(
+                                            (_model.apiResult2ve?.jsonBody ??
+                                                ''),
+                                            r'''$.data.first_name''',
+                                          ).toString();
+                                          _model.textController1?.selection =
+                                              TextSelection.collapsed(
+                                                  offset: _model
+                                                      .textController1!
+                                                      .text
+                                                      .length);
+                                        });
+                                        safeSetState(() {
+                                          _model.textController2?.text =
+                                              getJsonField(
+                                            (_model.apiResult2ve?.jsonBody ??
+                                                ''),
+                                            r'''$.data.last_name''',
+                                          ).toString();
+                                          _model.textController2?.selection =
+                                              TextSelection.collapsed(
+                                                  offset: _model
+                                                      .textController2!
+                                                      .text
+                                                      .length);
+                                        });
+                                        safeSetState(() {
+                                          _model.textController3?.text =
+                                              getJsonField(
+                                            (_model.apiResult2ve?.jsonBody ??
+                                                ''),
+                                            r'''$.data.id_card_number''',
+                                          ).toString();
+                                          _model.textController3?.selection =
+                                              TextSelection.collapsed(
+                                                  offset: _model
+                                                      .textController3!
+                                                      .text
+                                                      .length);
+                                        });
+                                        _model.allCardData = getJsonField(
+                                          (_model.apiResult2ve?.jsonBody ?? ''),
+                                          r'''$.data.all_data''',
+                                        ).toString();
+                                      }
+                                    } else {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (dialogContext) {
+                                          return Dialog(
+                                            elevation: 0,
+                                            insetPadding: EdgeInsets.zero,
+                                            backgroundColor: Colors.transparent,
+                                            alignment: AlignmentDirectional(
+                                                    0.0, 0.0)
+                                                .resolve(
+                                                    Directionality.of(context)),
+                                            child: WebViewAware(
+                                              child: InfoCustomViewWidget(
+                                                title: FFAppState()
+                                                    .configData
+                                                    .ocrErrorText
+                                                    .first,
+                                                detail: FFAppState()
+                                                    .configData
+                                                    .ocrErrorText
+                                                    .last,
+                                                status: 'warning',
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }
+                                  }
+
+                                  safeSetState(() {});
+                                },
+                                text: 'ถ่ายรูปบัตรประชาชน/ใบขับขี่',
+                                icon: Icon(
+                                  Icons.photo_camera,
+                                  size: 32.0,
+                                ),
+                                options: FFButtonOptions(
+                                  width: double.infinity,
+                                  height: 50.0,
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      24.0, 0.0, 24.0, 0.0),
+                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 0.0),
+                                  color: FlutterFlowTheme.of(context).warning,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .titleSmall
+                                      .override(
+                                        fontFamily: 'Kanit',
+                                        color: Colors.white,
+                                        fontSize: 20.0,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  elevation: 3.0,
+                                  borderSide: BorderSide(
+                                    color: Colors.transparent,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                            ),
+                          ),
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 16.0),
@@ -800,6 +1018,7 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                       remark: _model.textController5.text,
                                       startDate: _model.startDate,
                                       endDate: _model.endDate,
+                                      cardDetail: _model.allCardData,
                                     ),
                                     ...mapToFirestore(
                                       {

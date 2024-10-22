@@ -108,4 +108,12 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     }
     tmpVehicleList = vehicleList.toList().cast<VehicleDataStruct>();
   }
+
+  Future checkCuurentDate(BuildContext context) async {
+    if (functions.getStartDayTime(getCurrentTimestamp) !=
+        functions.getStartDayTime(FFAppState().currentDate!)) {
+      FFAppState().currentDate = functions.getStartDayTime(getCurrentTimestamp);
+      FFAppState().isSkipOCRAlert = false;
+    }
+  }
 }

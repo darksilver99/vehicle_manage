@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
+import '/backend/api_requests/api_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 
@@ -40,6 +41,14 @@ class FFAppState extends ChangeNotifier {
           print("Can't decode persisted data type. Error: $e.");
         }
       }
+    });
+    _safeInit(() {
+      _isSkipOCRAlert = prefs.getBool('ff_isSkipOCRAlert') ?? _isSkipOCRAlert;
+    });
+    _safeInit(() {
+      _currentDate = prefs.containsKey('ff_currentDate')
+          ? DateTime.fromMillisecondsSinceEpoch(prefs.getInt('ff_currentDate')!)
+          : _currentDate;
     });
   }
 
@@ -90,6 +99,22 @@ class FFAppState extends ChangeNotifier {
   DocumentReference? get tmpVehicleRef => _tmpVehicleRef;
   set tmpVehicleRef(DocumentReference? value) {
     _tmpVehicleRef = value;
+  }
+
+  bool _isSkipOCRAlert = false;
+  bool get isSkipOCRAlert => _isSkipOCRAlert;
+  set isSkipOCRAlert(bool value) {
+    _isSkipOCRAlert = value;
+    prefs.setBool('ff_isSkipOCRAlert', value);
+  }
+
+  DateTime? _currentDate = DateTime.fromMillisecondsSinceEpoch(23599860000);
+  DateTime? get currentDate => _currentDate;
+  set currentDate(DateTime? value) {
+    _currentDate = value;
+    value != null
+        ? prefs.setInt('ff_currentDate', value.millisecondsSinceEpoch)
+        : prefs.remove('ff_currentDate');
   }
 }
 

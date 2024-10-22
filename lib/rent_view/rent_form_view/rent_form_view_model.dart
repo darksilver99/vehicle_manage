@@ -1,9 +1,13 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/upload_data.dart';
 import '/other_view/info_custom_view/info_custom_view_widget.dart';
+import '/other_view/o_c_r_alert_view/o_c_r_alert_view_widget.dart';
+import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'rent_form_view_widget.dart' show RentFormViewWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,9 +26,19 @@ class RentFormViewModel extends FlutterFlowModel<RentFormViewWidget> {
 
   DateTime? endDate;
 
+  String? allCardData;
+
   ///  State fields for stateful widgets in this component.
 
   final formKey = GlobalKey<FormState>();
+  bool isDataUploading = false;
+  FFUploadedFile uploadedLocalFile =
+      FFUploadedFile(bytes: Uint8List.fromList([]));
+
+  // Stores action output result for [Custom Action - getBase64] action in Button widget.
+  String? base64Result;
+  // Stores action output result for [Backend Call - API (getORCData)] action in Button widget.
+  ApiCallResponse? apiResult2ve;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode1;
   TextEditingController? textController1;

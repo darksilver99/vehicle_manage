@@ -48,6 +48,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           FFAppState().configData.storeVersion) {
         await action_blocks.initCustomer(context);
         await _model.initVehicle(context);
+        await _model.checkCuurentDate(context);
         _model.isLoading = false;
         safeSetState(() {});
       } else {
@@ -345,6 +346,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         ),
                                       }.withoutNulls,
                                     );
+
+                                    _model.isLoading = true;
+                                    safeSetState(() {});
+                                    await _model.initVehicle(context);
+                                    _model.isLoading = false;
+                                    safeSetState(() {});
                                   },
                                   child: Container(
                                     width: double.infinity,
@@ -501,7 +508,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                         } else if (vehicleViewListItem.statusText ==
                                                                             'ว่างในวันนี้') {
                                                                           return FlutterFlowTheme.of(context)
-                                                                              .success;
+                                                                              .info;
                                                                         } else {
                                                                           return FlutterFlowTheme.of(context)
                                                                               .error;
