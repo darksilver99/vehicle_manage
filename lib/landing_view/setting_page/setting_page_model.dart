@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/other_view/issue_view/issue_view_widget.dart';
 import '/other_view/promotion_view/promotion_view_widget.dart';
+import '/other_view/select_month_and_year_to_export_view/select_month_and_year_to_export_view_widget.dart';
 import '/other_view/suggest_view/suggest_view_widget.dart';
 import '/actions/actions.dart' as action_blocks;
 import 'setting_page_widget.dart' show SettingPageWidget;
