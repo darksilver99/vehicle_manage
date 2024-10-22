@@ -488,11 +488,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                     .override(
                                                                       fontFamily:
                                                                           'Kanit',
-                                                                      color: vehicleViewListItem.status == 3
-                                                                          ? FlutterFlowTheme.of(context)
-                                                                              .warning
-                                                                          : FlutterFlowTheme.of(context)
-                                                                              .success,
+                                                                      color:
+                                                                          () {
+                                                                        if (vehicleViewListItem.statusText ==
+                                                                            'ปรับปรุง') {
+                                                                          return FlutterFlowTheme.of(context)
+                                                                              .warning;
+                                                                        } else if (vehicleViewListItem.statusText ==
+                                                                            'ว่าง') {
+                                                                          return FlutterFlowTheme.of(context)
+                                                                              .success;
+                                                                        } else if (vehicleViewListItem.statusText ==
+                                                                            'ว่างในวันนี้') {
+                                                                          return FlutterFlowTheme.of(context)
+                                                                              .success;
+                                                                        } else {
+                                                                          return FlutterFlowTheme.of(context)
+                                                                              .error;
+                                                                        }
+                                                                      }(),
                                                                       letterSpacing:
                                                                           0.0,
                                                                       fontWeight:
