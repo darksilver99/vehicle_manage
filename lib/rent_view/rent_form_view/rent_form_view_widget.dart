@@ -700,8 +700,8 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                   width: double.infinity,
                                   height: 54.0,
                                   decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryBackground,
+                                    color:
+                                        FlutterFlowTheme.of(context).alternate,
                                     borderRadius: BorderRadius.circular(8.0),
                                     border: Border.all(
                                       color: FlutterFlowTheme.of(context)
