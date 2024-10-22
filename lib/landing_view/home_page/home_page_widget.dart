@@ -192,6 +192,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
             top: true,
             child: Stack(
               children: [
+                wrapWithModel(
+                  model: _model.authenBackgroundViewModel,
+                  updateCallback: () => safeSetState(() {}),
+                  child: AuthenBackgroundViewWidget(),
+                ),
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -565,11 +570,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         ),
                       ),
                   ],
-                ),
-                wrapWithModel(
-                  model: _model.authenBackgroundViewModel,
-                  updateCallback: () => safeSetState(() {}),
-                  child: AuthenBackgroundViewWidget(),
                 ),
               ],
             ),

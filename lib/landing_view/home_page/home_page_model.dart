@@ -61,12 +61,12 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   int? totelVehicle;
   // Stores action output result for [Bottom Sheet - VehicleFormView] action in FloatingActionButton widget.
   String? isUpdate;
+  // Model for AuthenBackgroundView component.
+  late AuthenBackgroundViewModel authenBackgroundViewModel;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
-  // Model for AuthenBackgroundView component.
-  late AuthenBackgroundViewModel authenBackgroundViewModel;
 
   @override
   void initState(BuildContext context) {
@@ -76,10 +76,9 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
 
   @override
   void dispose() {
+    authenBackgroundViewModel.dispose();
     textFieldFocusNode?.dispose();
     textController?.dispose();
-
-    authenBackgroundViewModel.dispose();
   }
 
   /// Action blocks.
