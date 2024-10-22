@@ -1,3 +1,5 @@
+import 'package:vehicle_manage/custom_toon/SkeltonLoadView.dart';
+
 import '/auth/firebase_auth/auth_util.dart';
 import '/authen_view/authen_background_view/authen_background_view_widget.dart';
 import '/backend/backend.dart';
@@ -575,6 +577,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           width: double.infinity,
                           height: 100.0,
                           decoration: BoxDecoration(),
+                          child: SkeltonLoadView(),
                         ),
                       ),
                   ],
