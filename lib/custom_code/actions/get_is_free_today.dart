@@ -10,7 +10,29 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
+import '/flutter_flow/custom_functions.dart' as functions;
+
 Future<String> getIsFreeToday(DocumentReference vehicleRef) async {
   // Add your function code here!
-  return "ว่าง";
+  QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+      .instance
+      .collection("${vehicleRef.path}/rent_list")
+      .get();
+
+  List<RentListRecord> rentListRecords = querySnapshot.docs
+      .map((doc) => RentListRecord.fromSnapshot(doc))
+      .toList();
+
+  if (rentListRecords.isEmpty) {
+    return "ว่าง";
+  }
+
+  for (final doc in rentListRecords) {
+    if (doc.rentDateList
+        .contains(functions.getStartDayTime(getCurrentTimestamp))) {
+      return "วันนี้ไม่ว่าง";
+    }
+  }
+
+  return "ว่างในวันนี้";
 }
