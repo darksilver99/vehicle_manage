@@ -4,6 +4,7 @@ import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/other_view/confirm_custom_view/confirm_custom_view_widget.dart';
+import '/other_view/info_custom_view/info_custom_view_widget.dart';
 import '/actions/actions.dart' as action_blocks;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,6 +62,27 @@ Future initCustomer(BuildContext context) async {
           customerName: currentUserEmail,
           maxVehicle: 10,
         ));
+    if (!FFAppState().configData.isReview) {
+      await showDialog(
+        context: context,
+        builder: (dialogContext) {
+          return Dialog(
+            elevation: 0,
+            insetPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            alignment: AlignmentDirectional(0.0, 0.0)
+                .resolve(Directionality.of(context)),
+            child: WebViewAware(
+              child: InfoCustomViewWidget(
+                title:
+                    'พิเศษสำหรับสมาชิกใหม่ ทดลองใช้ฟรี ${FFAppState().configData.freeDay.toString()} วัน กำหนดจำนวนรถไม่เกิน 10 คัน',
+                status: 'success',
+              ),
+            ),
+          );
+        },
+      );
+    }
     await action_blocks.initCustomer(context);
   }
 }

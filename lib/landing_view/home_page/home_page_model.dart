@@ -4,6 +4,7 @@ import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/other_view/info_custom_view/info_custom_view_widget.dart';
 import '/other_view/no_data_view/no_data_view_widget.dart';
 import '/vehicle_view/vehicle_form_view/vehicle_form_view_widget.dart';
 import '/actions/actions.dart' as action_blocks;
@@ -51,8 +52,12 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
           int index, Function(VehicleDataStruct) updateFn) =>
       tmpVehicleList[index] = updateFn(tmpVehicleList[index]);
 
+  String statusText = '-';
+
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Firestore Query - Query a collection] action in FloatingActionButton widget.
+  int? totelVehicle;
   // Stores action output result for [Bottom Sheet - VehicleFormView] action in FloatingActionButton widget.
   String? isUpdate;
   // State field(s) for TextField widget.
@@ -72,6 +77,7 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   /// Action blocks.
   Future initVehicle(BuildContext context) async {
     List<VehicleListRecord>? vehicleResult;
+    String? statusText;
 
     vehicleResult = await queryVehicleListRecordOnce(
       parent: FFAppState().customerData.customerRef,
@@ -81,14 +87,22 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
     vehicleIndex = 0;
     vehicleList = [];
     while (vehicleIndex < vehicleResult!.length) {
+      if (vehicleResult?[vehicleIndex]?.status == 3) {
+        statusText = 'ปรับปรุง';
+      } else {
+        statusText = await actions.getIsFreeToday(
+          vehicleResult![vehicleIndex].reference,
+        );
+        statusText = statusText!;
+      }
+
       addToVehicleList(VehicleDataStruct(
         docRef: vehicleResult?[vehicleIndex]?.reference,
         subject: vehicleResult?[vehicleIndex]?.subject,
         vehicleNumber: vehicleResult?[vehicleIndex]?.vehicleNumber,
         image: vehicleResult?[vehicleIndex]?.image,
         status: vehicleResult?[vehicleIndex]?.status,
-        statusText:
-            vehicleResult?[vehicleIndex]?.status == 3 ? 'ปรับปรุง' : 'ว่าง',
+        statusText: statusText,
       ));
       vehicleIndex = vehicleIndex + 1;
     }
