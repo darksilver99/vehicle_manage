@@ -122,6 +122,7 @@ dependencies:
   device_info_plus: ^10.1.0
   package_info_plus: ^3.0.3
   skeleton_loader: ^2.0.0+4
+  excel: ^4.0.0
 
 dependency_overrides:
   http: 1.2.1
