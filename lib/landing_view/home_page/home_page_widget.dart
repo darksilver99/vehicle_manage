@@ -1,4 +1,5 @@
 import '/auth/firebase_auth/auth_util.dart';
+import '/authen_view/authen_background_view/authen_background_view_widget.dart';
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -189,153 +190,158 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           ),
           body: SafeArea(
             top: true,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
+            child: Stack(
               children: [
-                Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 8.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          child: TextFormField(
-                            controller: _model.textController,
-                            focusNode: _model.textFieldFocusNode,
-                            onChanged: (_) => EasyDebounce.debounce(
-                              '_model.textController',
-                              Duration(milliseconds: 100),
-                              () async {
-                                if (_model.textController.text != null &&
-                                    _model.textController.text != '') {
-                                  _model.vehicleList = functions
-                                      .filterVehicleList(
-                                          _model.textController.text,
-                                          _model.tmpVehicleList.toList())
-                                      .toList()
-                                      .cast<VehicleDataStruct>();
-                                  safeSetState(() {});
-                                } else {
-                                  _model.vehicleList = _model.tmpVehicleList
-                                      .toList()
-                                      .cast<VehicleDataStruct>();
-                                  safeSetState(() {});
-                                }
-                              },
-                            ),
-                            autofocus: false,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              isDense: true,
-                              labelStyle: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    fontFamily: 'Kanit',
-                                    fontSize: 18.0,
-                                    letterSpacing: 0.0,
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              width: double.infinity,
+                              child: TextFormField(
+                                controller: _model.textController,
+                                focusNode: _model.textFieldFocusNode,
+                                onChanged: (_) => EasyDebounce.debounce(
+                                  '_model.textController',
+                                  Duration(milliseconds: 100),
+                                  () async {
+                                    if (_model.textController.text != null &&
+                                        _model.textController.text != '') {
+                                      _model.vehicleList = functions
+                                          .filterVehicleList(
+                                              _model.textController.text,
+                                              _model.tmpVehicleList.toList())
+                                          .toList()
+                                          .cast<VehicleDataStruct>();
+                                      safeSetState(() {});
+                                    } else {
+                                      _model.vehicleList = _model.tmpVehicleList
+                                          .toList()
+                                          .cast<VehicleDataStruct>();
+                                      safeSetState(() {});
+                                    }
+                                  },
+                                ),
+                                autofocus: false,
+                                obscureText: false,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  labelStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        fontFamily: 'Kanit',
+                                        fontSize: 18.0,
+                                        letterSpacing: 0.0,
+                                      ),
+                                  hintText: 'ค้นหา ชื่อ, ทะเบียน',
+                                  hintStyle: FlutterFlowTheme.of(context)
+                                      .labelMedium
+                                      .override(
+                                        fontFamily: 'Kanit',
+                                        fontSize: 18.0,
+                                        letterSpacing: 0.0,
+                                      ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                              hintText: 'ค้นหา ชื่อ, ทะเบียน',
-                              hintStyle: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    fontFamily: 'Kanit',
-                                    fontSize: 18.0,
-                                    letterSpacing: 0.0,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).alternate,
-                                  width: 1.0,
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: FlutterFlowTheme.of(context).error,
+                                      width: 1.0,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
                                 ),
-                                borderRadius: BorderRadius.circular(8.0),
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyMedium
+                                    .override(
+                                      fontFamily: 'Kanit',
+                                      fontSize: 18.0,
+                                      letterSpacing: 0.0,
+                                    ),
+                                cursorColor:
+                                    FlutterFlowTheme.of(context).primaryText,
+                                validator: _model.textControllerValidator
+                                    .asValidator(context),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).alternate,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).error,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: FlutterFlowTheme.of(context).error,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              filled: true,
-                              fillColor: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
                             ),
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Kanit',
-                                  fontSize: 18.0,
-                                  letterSpacing: 0.0,
-                                ),
-                            cursorColor:
-                                FlutterFlowTheme.of(context).primaryText,
-                            validator: _model.textControllerValidator
-                                .asValidator(context),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                if (!_model.isLoading)
-                  Expanded(
-                    child: Builder(
-                      builder: (context) {
-                        final vehicleViewList = _model.vehicleList.toList();
-                        if (vehicleViewList.isEmpty) {
-                          return NoDataViewWidget();
-                        }
+                    ),
+                    if (!_model.isLoading)
+                      Expanded(
+                        child: Builder(
+                          builder: (context) {
+                            final vehicleViewList = _model.vehicleList.toList();
+                            if (vehicleViewList.isEmpty) {
+                              return NoDataViewWidget();
+                            }
 
-                        return RefreshIndicator(
-                          onRefresh: () async {
-                            _model.isLoading = true;
-                            safeSetState(() {});
-                            await _model.initVehicle(context);
-                            _model.isLoading = false;
-                            safeSetState(() {});
-                          },
-                          child: ListView.separated(
-                            padding: EdgeInsets.fromLTRB(
-                              0,
-                              16.0,
-                              0,
-                              180.0,
-                            ),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: vehicleViewList.length,
-                            separatorBuilder: (_, __) => SizedBox(height: 8.0),
-                            itemBuilder: (context, vehicleViewListIndex) {
-                              final vehicleViewListItem =
-                                  vehicleViewList[vehicleViewListIndex];
-                              return Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    16.0, 0.0, 16.0, 0.0),
-                                child: InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    await actions.hideKeyBoard(
-                                      context,
-                                    );
+                            return RefreshIndicator(
+                              onRefresh: () async {
+                                _model.isLoading = true;
+                                safeSetState(() {});
+                                await _model.initVehicle(context);
+                                _model.isLoading = false;
+                                safeSetState(() {});
+                              },
+                              child: ListView.separated(
+                                padding: EdgeInsets.fromLTRB(
+                                  0,
+                                  16.0,
+                                  0,
+                                  180.0,
+                                ),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: vehicleViewList.length,
+                                separatorBuilder: (_, __) =>
+                                    SizedBox(height: 8.0),
+                                itemBuilder: (context, vehicleViewListIndex) {
+                                  final vehicleViewListItem =
+                                      vehicleViewList[vehicleViewListIndex];
+                                  return Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        16.0, 0.0, 16.0, 0.0),
+                                    child: InkWell(
+                                      splashColor: Colors.transparent,
+                                      focusColor: Colors.transparent,
+                                      hoverColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () async {
+                                        await actions.hideKeyBoard(
+                                          context,
+                                        );
 
                                     await context.pushNamed(
                                       'VehicleDetailPage',
@@ -347,87 +353,106 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       }.withoutNulls,
                                     );
 
-                                    _model.isLoading = true;
-                                    safeSetState(() {});
-                                    await _model.initVehicle(context);
-                                    _model.isLoading = false;
-                                    safeSetState(() {});
-                                  },
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: 100.0,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                        color: FlutterFlowTheme.of(context)
-                                            .alternate,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          8.0, 8.0, 8.0, 8.0),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: Image.network(
-                                              vehicleViewListItem.image,
-                                              width: 80.0,
-                                              height: 80.0,
-                                              fit: BoxFit.cover,
-                                              errorBuilder: (context, error,
-                                                      stackTrace) =>
-                                                  Image.asset(
-                                                'assets/images/error_image.jpg',
-                                                width: 80.0,
-                                                height: 80.0,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
+                                        _model.isLoading = true;
+                                        safeSetState(() {});
+                                        await _model.initVehicle(context);
+                                        _model.isLoading = false;
+                                        safeSetState(() {});
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        height: 100.0,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          border: Border.all(
+                                            color: FlutterFlowTheme.of(context)
+                                                .alternate,
+                                            width: 1.0,
                                           ),
-                                          Expanded(
-                                            child: Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(8.0, 0.0, 0.0, 0.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Row(
+                                        ),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  8.0, 8.0, 8.0, 8.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                child: Image.network(
+                                                  vehicleViewListItem.image,
+                                                  width: 80.0,
+                                                  height: 80.0,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error,
+                                                          stackTrace) =>
+                                                      Image.asset(
+                                                    'assets/images/error_image.jpg',
+                                                    width: 80.0,
+                                                    height: 80.0,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          8.0, 0.0, 0.0, 0.0),
+                                                  child: Column(
                                                     mainAxisSize:
                                                         MainAxisSize.max,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Expanded(
-                                                        child: RichText(
-                                                          textScaler:
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .textScaler,
-                                                          text: TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text:
-                                                                    '(${vehicleViewListItem.vehicleNumber}) ',
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Kanit',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                    ),
-                                                              ),
-                                                              TextSpan(
-                                                                text:
-                                                                    vehicleViewListItem
+                                                      Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Expanded(
+                                                            child: RichText(
+                                                              textScaler:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .textScaler,
+                                                              text: TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                    text:
+                                                                        '(${vehicleViewListItem.vehicleNumber}) ',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Kanit',
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
+                                                                  ),
+                                                                  TextSpan(
+                                                                    text: vehicleViewListItem
                                                                         .subject,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Kanit',
+                                                                          fontSize:
+                                                                              18.0,
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                  )
+                                                                ],
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -435,47 +460,72 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                       fontFamily:
                                                                           'Kanit',
                                                                       fontSize:
-                                                                          18.0,
+                                                                          22.0,
                                                                       letterSpacing:
                                                                           0.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
                                                                     ),
-                                                              )
-                                                            ],
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Kanit',
-                                                                  fontSize:
-                                                                      22.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
+                                                              ),
+                                                              maxLines: 2,
+                                                            ),
                                                           ),
-                                                          maxLines: 2,
-                                                        ),
+                                                        ],
                                                       ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    children: [
-                                                      Expanded(
-                                                        child: RichText(
-                                                          textScaler:
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .textScaler,
-                                                          text: TextSpan(
-                                                            children: [
-                                                              TextSpan(
-                                                                text:
-                                                                    'สถานะ : ',
+                                                      Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.max,
+                                                        children: [
+                                                          Expanded(
+                                                            child: RichText(
+                                                              textScaler:
+                                                                  MediaQuery.of(
+                                                                          context)
+                                                                      .textScaler,
+                                                              text: TextSpan(
+                                                                children: [
+                                                                  TextSpan(
+                                                                    text:
+                                                                        'สถานะ : ',
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Kanit',
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                        ),
+                                                                  ),
+                                                                  TextSpan(
+                                                                    text: vehicleViewListItem
+                                                                        .statusText,
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .bodyMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'Kanit',
+                                                                          color:
+                                                                              () {
+                                                                            if (vehicleViewListItem.statusText ==
+                                                                                'ปรับปรุง') {
+                                                                              return FlutterFlowTheme.of(context).warning;
+                                                                            } else if (vehicleViewListItem.statusText ==
+                                                                                'ว่าง') {
+                                                                              return FlutterFlowTheme.of(context).success;
+                                                                            } else if (vehicleViewListItem.statusText ==
+                                                                                'ว่างในวันนี้') {
+                                                                              return FlutterFlowTheme.of(context).info;
+                                                                            } else {
+                                                                              return FlutterFlowTheme.of(context).error;
+                                                                            }
+                                                                          }(),
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                  )
+                                                                ],
                                                                 style: FlutterFlowTheme.of(
                                                                         context)
                                                                     .bodyMedium
@@ -486,79 +536,41 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                                                           0.0,
                                                                     ),
                                                               ),
-                                                              TextSpan(
-                                                                text: vehicleViewListItem
-                                                                    .statusText,
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'Kanit',
-                                                                      color:
-                                                                          () {
-                                                                        if (vehicleViewListItem.statusText ==
-                                                                            'ปรับปรุง') {
-                                                                          return FlutterFlowTheme.of(context)
-                                                                              .warning;
-                                                                        } else if (vehicleViewListItem.statusText ==
-                                                                            'ว่าง') {
-                                                                          return FlutterFlowTheme.of(context)
-                                                                              .success;
-                                                                        } else if (vehicleViewListItem.statusText ==
-                                                                            'ว่างในวันนี้') {
-                                                                          return FlutterFlowTheme.of(context)
-                                                                              .info;
-                                                                        } else {
-                                                                          return FlutterFlowTheme.of(context)
-                                                                              .error;
-                                                                        }
-                                                                      }(),
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    ),
-                                                              )
-                                                            ],
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Kanit',
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                ),
+                                                              maxLines: 1,
+                                                            ),
                                                           ),
-                                                          maxLines: 1,
-                                                        ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
-                                                ],
+                                                ),
                                               ),
-                                            ),
+                                              Icon(
+                                                Icons.navigate_next_rounded,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                                size: 24.0,
+                                              ),
+                                            ],
                                           ),
-                                          Icon(
-                                            Icons.navigate_next_rounded,
-                                            color: FlutterFlowTheme.of(context)
-                                                .primaryText,
-                                            size: 24.0,
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+                wrapWithModel(
+                  model: _model.authenBackgroundViewModel,
+                  updateCallback: () => safeSetState(() {}),
+                  child: AuthenBackgroundViewWidget(),
+                ),
               ],
             ),
           ),
