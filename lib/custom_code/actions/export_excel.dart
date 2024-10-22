@@ -17,6 +17,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:vehicle_manage/custom_toon.dart';
 
 Future<String> exportExcel(
   DateTime? startDate,
@@ -81,10 +82,6 @@ Future<String> exportExcel(
   cell.cellStyle = CellStyle(fontSize: 22, bold: true);
 
   for (var i = 0; i < header.length; i++) {
-    header.add(header[i]);
-  }
-
-  for (var i = 0; i < header.length; i++) {
     var cell = sheetObject
         .cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: 1));
     cell.value = TextCellValue(header[i]);
@@ -92,99 +89,83 @@ Future<String> exportExcel(
   }
 
   // body
-  for (int i = 0; i < rsMember.size; i++) {
-    var cell = sheetObject
-        .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 2));
-    cell.cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Left);
-    cell.value = TextCellValue('${rsMember.docs[i].data()["display_name"]}');
 
-    for (int j = 0; j < dateRange.length; j++) {
-      var cell = sheetObject.cell(
-          CellIndex.indexByColumnRow(columnIndex: j + 1, rowIndex: i + 2));
-      cell.cellStyle = CellStyle(
-          textWrapping: TextWrapping.WrapText,
-          verticalAlign: VerticalAlign.Top,
-          horizontalAlign: HorizontalAlign.Left);
+  List<RentListRecord> dataList =
+      await getCustomerRentList(customerRef.id, startDate!);
 
-      var transactionInThisDate = filterSnapshotByDate(rs,
-          DateTime(dateRange[j].year, dateRange[j].month, dateRange[j].day));
-      var transactionInThisMember = filterSnapshotByMemberRef(
-          transactionInThisDate, rsMember.docs[i].reference);
+  for (int i = 0; i < dataList.length; i++) {
+    var rentRecord = dataList[i];
 
-      //List<QueryDocumentSnapshot<Map<String, dynamic>>>
-      //List<QuerySnapshot<Map<String, dynamic>>>
-      if (transactionInThisMember.isNotEmpty) {
-        var data = "";
-        for (int k = 0; k < transactionInThisMember.length; k++) {
-          //if (transactionInThisDate[k].data()["member_ref"] == rsMember.docs[i].reference) {
-          var line = "";
-          if (k > 0) {
-            line = "------------------------------\n";
-          }
-          if (transactionInThisMember[k].data()["status"] == 3) {
-            data =
-                "$data$line${transactionInThisMember[k].data()["detail_in"]}\n";
-          } else {
-            // เวลา
-            var dateIn = dateTimeFormat(
-                'Hm', transactionInThisMember[k].data()["date_in"].toDate());
-            var dateOut =
-                transactionInThisMember[k].data().containsKey("date_out")
-                    ? dateTimeFormat('Hm',
-                        transactionInThisMember[k].data()["date_out"].toDate())
-                    : "-";
+    // Set each value in the corresponding column
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i + 2))
+      ..value = TextCellValue("${rentRecord.firstName} ${rentRecord.lastName}")
+      ..cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Left);
 
-            if (dateOut != "-") {
-              if (functions.checkIsDateAfter(
-                  transactionInThisMember[k].data()["date_out"].toDate(),
-                  transactionInThisMember[k].data()["date_in"].toDate())) {
-                dateOut = functions.dateTimeTh(
-                    transactionInThisMember[k].data()["date_out"].toDate())!;
-              }
-            }
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i + 2))
+      ..value = TextCellValue(" ${rentRecord.idCardNumber}")
+      ..cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Left);
 
-            var startEndTimeText = "เข้างาน : $dateIn | ออกงาน : $dateOut";
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i + 2))
+      ..value = TextCellValue(" ${rentRecord.phoneNumber}")
+      ..cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Left);
 
-            //รายละเอียด
-            var detailIn =
-                transactionInThisMember[k].data().containsKey("detail_in")
-                    ? transactionInThisMember[k].data()["detail_in"]
-                    : "";
-            var detailOut =
-                transactionInThisMember[k].data().containsKey("detail_out")
-                    ? transactionInThisMember[k].data()["detail_out"]
-                    : "";
-            var startEndDetailText =
-                "รายละเอียด(เข้างาน) : ${(detailIn != '') ? detailIn : " -"}\n รายละเอียด(ออกงาน) : ${(detailOut != '') ? detailOut : " -"}";
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i + 2))
+      ..value = TextCellValue(
+          "${functions.dateTh(rentRecord.startDate)} - ${functions.dateTh(rentRecord.endDate)}")
+      ..cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Center);
 
-            //ระยะเวลา
-            var durationText = "";
-            if (transactionInThisMember[k].data().containsKey("date_out")) {
-              durationText =
-                  "ระยะเวลาทำงาน : ${functions.formatDuration(functions.millisecondsBetween(transactionInThisMember[k].data()["date_in"].toDate(), transactionInThisMember[k].data()["date_out"].toDate()))}";
-            }
+    String carData = await getCarData(rentRecord.reference.parent.parent!);
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: i + 2))
+      ..value = TextCellValue(carData)
+      ..cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Center);
 
-            //รูป
-            //ไม่ได้ hyper link ไม่ร้องรับ บางส่วนของ string ใน 1 ช่อง อาจต้องเป็นทั้งช่องไปเลย
-            /*var photoIn = transactionInThisMember[k].data().containsKey("photo_in") ? transactionInThisMember[k].data()["photo_in"] : "";
-            var photoOut = transactionInThisMember[k].data().containsKey("photo_out") ? transactionInThisMember[k].data()["photo_out"] : "";
-            String hyperlinkIn = (photoIn != '') ? '=HYPERLINK("$photoIn", "ดูรูป")' : " -";
-            String hyperlinkOut = (photoOut != '') ? '=HYPERLINK("$photoOut", "ดูรูป")' : " -";
-            var startEndPhotoText = "รูป(เข้างาน) : $hyperlinkIn\n รูป(ออกงาน) : $hyperlinkOut";*/
-            data =
-                "$data$line$startEndTimeText\n$startEndDetailText\n$durationText\n";
-          }
-          //}
-        }
-        cell.value = TextCellValue(data);
-      }
+    var statusCell = sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: i + 2));
+    if (rentRecord.rentPaymentDate != null) {
+      statusCell.value = TextCellValue("ชำระเงินแล้ว");
+      statusCell.cellStyle = CellStyle(
+        horizontalAlign: HorizontalAlign.Center,
+        fontColorHex: ExcelColor.fromHexString("#008000"),
+      );
+    } else {
+      statusCell.value = TextCellValue("ยังไม่ชำระเงิน");
+      statusCell.cellStyle = CellStyle(
+        horizontalAlign: HorizontalAlign.Center,
+        fontColorHex: ExcelColor.fromHexString("#FF0000"),
+      );
     }
+
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: i + 2))
+      ..value = TextCellValue(
+          "${(rentRecord.rentPaymentDate != null) ? functions.dateTimeTh(rentRecord.rentPaymentDate) : "-"}")
+      ..cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Center);
+
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: i + 2))
+      ..value = TextCellValue(
+          "${(rentRecord.rentPaymentDate != null) ? rentRecord.rentPrice : "-"}")
+      ..cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Center);
+
+    sheetObject
+        .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: i + 2))
+      ..value = rentRecord.rentPaymentDate != null &&
+              rentRecord.rentPaymentSlip.isNotEmpty
+          ? FormulaCellValue(
+              'HYPERLINK("${rentRecord.rentPaymentSlip}", "ดูสลิป")')
+          : TextCellValue("-")
+      ..cellStyle = CellStyle(horizontalAlign: HorizontalAlign.Center);
   }
 
   // Auto-size columns
-  for (int col = 0; col < 60; col++) {
+  for (int col = 0; col < 10; col++) {
     //sheetObject.setColumnWidth(col, 2000);
-    sheetObject.setDefaultColumnWidth(25);
+    sheetObject.setDefaultColumnWidth(30);
     //sheetObject.setColumnAutoFit(col);
   }
 
