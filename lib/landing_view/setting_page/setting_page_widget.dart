@@ -175,7 +175,6 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
-                                        Function() _navigate = () {};
                                         _model.isConfirm2 =
                                             await action_blocks.confirmBlock(
                                           context,
@@ -185,9 +184,11 @@ class _SettingPageWidgetState extends State<SettingPageWidget> {
                                         );
                                         if (_model.isConfirm2!) {
                                           await authManager.deleteUser(context);
-                                        }
 
-                                        _navigate();
+                                          context.goNamed('AuthenPage');
+                                        } else {
+                                          safeSetState(() {});
+                                        }
 
                                         safeSetState(() {});
                                       },
