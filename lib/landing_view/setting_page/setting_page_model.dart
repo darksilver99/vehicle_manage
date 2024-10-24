@@ -22,6 +22,8 @@ class SettingPageModel extends FlutterFlowModel<SettingPageWidget> {
 
   // Model for AuthenBackgroundView component.
   late AuthenBackgroundViewModel authenBackgroundViewModel;
+  // Stores action output result for [Action Block - confirmBlock] action in Text widget.
+  bool? isConfirm2;
   // Stores action output result for [Action Block - confirmBlock] action in Column widget.
   bool? isConfirm;
 
