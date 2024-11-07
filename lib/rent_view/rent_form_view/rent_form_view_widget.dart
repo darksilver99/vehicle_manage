@@ -781,6 +781,7 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                     final _datePickedDate =
                                         await showDatePicker(
                                       context: context,
+                                      locale: Locale('th'),
                                       initialDate: (widget!.selectedDate ??
                                           DateTime.now()),
                                       firstDate: (widget!.selectedDate ??
