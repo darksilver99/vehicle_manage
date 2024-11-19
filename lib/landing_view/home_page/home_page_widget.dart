@@ -49,7 +49,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           FFAppState().configData.storeVersion) {
         await action_blocks.initCustomer(context);
         await _model.initVehicle(context);
-        await _model.checkCuurentDate(context);
         _model.isLoading = false;
         safeSetState(() {});
         await _model.checkCloseExpire(context);
