@@ -52,6 +52,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         await _model.checkCuurentDate(context);
         _model.isLoading = false;
         safeSetState(() {});
+        await _model.checkCloseExpire(context);
       } else {
         await showDialog(
           context: context,
@@ -344,9 +345,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                       hoverColor: Colors.transparent,
                                       highlightColor: Colors.transparent,
                                       onTap: () async {
+                                        var _shouldSetState = false;
                                         await actions.hideKeyBoard(
                                           context,
                                         );
+                                        _model.isExpire =
+                                            await _model.checkIsExpire(context);
+                                        _shouldSetState = true;
+                                        if (_model.isExpire!) {
+                                          if (_shouldSetState)
+                                            safeSetState(() {});
+                                          return;
+                                        }
 
                                         context.pushNamed(
                                           'VehicleDetailPage',
@@ -363,6 +373,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                         await _model.initVehicle(context);
                                         _model.isLoading = false;
                                         safeSetState(() {});
+                                        if (_shouldSetState)
+                                          safeSetState(() {});
                                       },
                                       child: Container(
                                         width: double.infinity,
