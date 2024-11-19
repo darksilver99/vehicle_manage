@@ -5,6 +5,7 @@ import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/other_view/expire_alert_view/expire_alert_view_widget.dart';
 import '/other_view/info_custom_view/info_custom_view_widget.dart';
 import '/other_view/no_data_view/no_data_view_widget.dart';
 import '/vehicle_view/vehicle_form_view/vehicle_form_view_widget.dart';
@@ -67,6 +68,8 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
   FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
+  // Stores action output result for [Action Block - checkIsExpire] action in Container widget.
+  bool? isExpire;
 
   @override
   void initState(BuildContext context) {
@@ -121,6 +124,72 @@ class HomePageModel extends FlutterFlowModel<HomePageWidget> {
         functions.getStartDayTime(FFAppState().currentDate!)) {
       FFAppState().currentDate = functions.getStartDayTime(getCurrentTimestamp);
       FFAppState().isSkipOCRAlert = false;
+    }
+  }
+
+  Future<bool?> checkIsExpire(BuildContext context) async {
+    if (getCurrentTimestamp > FFAppState().customerData.expireDate!) {
+      await showDialog(
+        context: context,
+        builder: (dialogContext) {
+          return Dialog(
+            elevation: 0,
+            insetPadding: EdgeInsets.zero,
+            backgroundColor: Colors.transparent,
+            alignment: AlignmentDirectional(0.0, 0.0)
+                .resolve(Directionality.of(context)),
+            child: WebViewAware(
+              child: GestureDetector(
+                onTap: () => FocusScope.of(dialogContext).unfocus(),
+                child: InfoCustomViewWidget(
+                  title: 'ขออภัยบัญชีของท่านหมดอายุการใช้งาน',
+                  status: 'error',
+                  detail:
+                      'กรุณาต่ออายุการใช้งาน ดูรายละเอียดเพิ่มเติมได้ที่เมนู \"ตั้งค่า\" > \"ต่ออายุการใช้งาน\"',
+                ),
+              ),
+            ),
+          );
+        },
+      );
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future checkCloseExpire(BuildContext context) async {
+    if (functions.getStartDayTime(getCurrentTimestamp) !=
+        functions.getStartDayTime(FFAppState().currentDate!)) {
+      FFAppState().currentDate = functions.getStartDayTime(getCurrentTimestamp);
+      FFAppState().isSkipExpireAlert = false;
+    }
+    if (getCurrentTimestamp >
+        functions.getBeforeDay(3, FFAppState().customerData.expireDate!)) {
+      if (!FFAppState().isSkipExpireAlert) {
+        if (functions.getStartDayTime(getCurrentTimestamp) <=
+            functions.getStartDayTime(FFAppState().customerData.expireDate!)) {
+          await showDialog(
+            context: context,
+            builder: (dialogContext) {
+              return Dialog(
+                elevation: 0,
+                insetPadding: EdgeInsets.zero,
+                backgroundColor: Colors.transparent,
+                alignment: AlignmentDirectional(0.0, 0.0)
+                    .resolve(Directionality.of(context)),
+                child: WebViewAware(
+                  child: GestureDetector(
+                    onTap: () => FocusScope.of(dialogContext).unfocus(),
+                    child: ExpireAlertViewWidget(),
+                  ),
+                ),
+              );
+            },
+          );
+        }
+      }
     }
   }
 }

@@ -261,12 +261,16 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                                 ''),
                                             r'''$.data.first_name''',
                                           ).toString();
-                                          _model.textController1?.selection =
-                                              TextSelection.collapsed(
-                                                  offset: _model
-                                                      .textController1!
-                                                      .text
-                                                      .length);
+                                          _model.textFieldFocusNode1
+                                              ?.requestFocus();
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            _model.textController1?.selection =
+                                                TextSelection.collapsed(
+                                              offset: _model
+                                                  .textController1!.text.length,
+                                            );
+                                          });
                                         });
                                         safeSetState(() {
                                           _model.textController2?.text =
@@ -275,12 +279,16 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                                 ''),
                                             r'''$.data.last_name''',
                                           ).toString();
-                                          _model.textController2?.selection =
-                                              TextSelection.collapsed(
-                                                  offset: _model
-                                                      .textController2!
-                                                      .text
-                                                      .length);
+                                          _model.textFieldFocusNode2
+                                              ?.requestFocus();
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            _model.textController2?.selection =
+                                                TextSelection.collapsed(
+                                              offset: _model
+                                                  .textController2!.text.length,
+                                            );
+                                          });
                                         });
                                         safeSetState(() {
                                           _model.textController3?.text =
@@ -289,12 +297,16 @@ class _RentFormViewWidgetState extends State<RentFormViewWidget> {
                                                 ''),
                                             r'''$.data.id_card_number''',
                                           ).toString();
-                                          _model.textController3?.selection =
-                                              TextSelection.collapsed(
-                                                  offset: _model
-                                                      .textController3!
-                                                      .text
-                                                      .length);
+                                          _model.textFieldFocusNode3
+                                              ?.requestFocus();
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            _model.textController3?.selection =
+                                                TextSelection.collapsed(
+                                              offset: _model
+                                                  .textController3!.text.length,
+                                            );
+                                          });
                                         });
                                         _model.allCardData = getJsonField(
                                           (_model.apiResult2ve?.jsonBody ?? ''),

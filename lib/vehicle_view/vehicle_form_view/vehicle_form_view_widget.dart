@@ -52,19 +52,31 @@ class _VehicleFormViewWidgetState extends State<VehicleFormViewWidget> {
             await VehicleListRecord.getDocumentOnce(widget!.vehicleReference!);
         safeSetState(() {
           _model.textController1?.text = _model.vehicleDocumentResult!.subject;
-          _model.textController1?.selection = TextSelection.collapsed(
-              offset: _model.textController1!.text.length);
+          _model.textFieldFocusNode1?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.textController1?.selection = TextSelection.collapsed(
+              offset: _model.textController1!.text.length,
+            );
+          });
         });
         safeSetState(() {
           _model.textController2?.text =
               _model.vehicleDocumentResult!.vehicleNumber;
-          _model.textController2?.selection = TextSelection.collapsed(
-              offset: _model.textController2!.text.length);
+          _model.textFieldFocusNode2?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.textController2?.selection = TextSelection.collapsed(
+              offset: _model.textController2!.text.length,
+            );
+          });
         });
         safeSetState(() {
           _model.textController3?.text = _model.vehicleDocumentResult!.detail;
-          _model.textController3?.selection = TextSelection.collapsed(
-              offset: _model.textController3!.text.length);
+          _model.textFieldFocusNode3?.requestFocus();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _model.textController3?.selection = TextSelection.collapsed(
+              offset: _model.textController3!.text.length,
+            );
+          });
         });
         _model.image = _model.vehicleDocumentResult?.image;
         safeSetState(() {});
