@@ -1,3 +1,4 @@
+import '/app_suggest_view/app_suggest_view/app_suggest_view_widget.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/authen_view/authen_background_view/authen_background_view_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';

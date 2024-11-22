@@ -81,6 +81,16 @@ class ConfigRecord extends FirestoreRecord {
   List<String> get ocrErrorText => _ocrErrorText ?? const [];
   bool hasOcrErrorText() => _ocrErrorText != null;
 
+  // "app_suggest_list" field.
+  List<AppSuggestDataStruct>? _appSuggestList;
+  List<AppSuggestDataStruct> get appSuggestList => _appSuggestList ?? const [];
+  bool hasAppSuggestList() => _appSuggestList != null;
+
+  // "app_other_list" field.
+  List<AppSuggestDataStruct>? _appOtherList;
+  List<AppSuggestDataStruct> get appOtherList => _appOtherList ?? const [];
+  bool hasAppOtherList() => _appOtherList != null;
+
   void _initializeFields() {
     _contact = getDataList(snapshotData['contact']);
     _freeDay = castToType<int>(snapshotData['free_day']);
@@ -95,6 +105,14 @@ class ConfigRecord extends FirestoreRecord {
     _ocrAlertText = getDataList(snapshotData['ocr_alert_text']);
     _ocrApi = snapshotData['ocr_api'] as String?;
     _ocrErrorText = getDataList(snapshotData['ocr_error_text']);
+    _appSuggestList = getStructList(
+      snapshotData['app_suggest_list'],
+      AppSuggestDataStruct.fromMap,
+    );
+    _appOtherList = getStructList(
+      snapshotData['app_other_list'],
+      AppSuggestDataStruct.fromMap,
+    );
   }
 
   static CollectionReference get collection =>
@@ -176,7 +194,9 @@ class ConfigRecordDocumentEquality implements Equality<ConfigRecord> {
         e1?.storeVersion == e2?.storeVersion &&
         listEquality.equals(e1?.ocrAlertText, e2?.ocrAlertText) &&
         e1?.ocrApi == e2?.ocrApi &&
-        listEquality.equals(e1?.ocrErrorText, e2?.ocrErrorText);
+        listEquality.equals(e1?.ocrErrorText, e2?.ocrErrorText) &&
+        listEquality.equals(e1?.appSuggestList, e2?.appSuggestList) &&
+        listEquality.equals(e1?.appOtherList, e2?.appOtherList);
   }
 
   @override
@@ -193,7 +213,9 @@ class ConfigRecordDocumentEquality implements Equality<ConfigRecord> {
         e?.storeVersion,
         e?.ocrAlertText,
         e?.ocrApi,
-        e?.ocrErrorText
+        e?.ocrErrorText,
+        e?.appSuggestList,
+        e?.appOtherList
       ]);
 
   @override
